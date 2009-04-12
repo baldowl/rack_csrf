@@ -1,0 +1,5 @@
+= Rack::Csrf
+
+Work-in-progress. Proof of concept for an anti-CSRF Rack middleware.
+
+I would rather you did not use it, at the moment.
