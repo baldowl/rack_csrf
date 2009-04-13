@@ -15,7 +15,7 @@ module Rack
       end
       req = Rack::Request.new(env)
       if %w(POST PUT DELETE).include?(req.request_method) && req.POST[self.class.csrf_field] != env['rack.session']['rack.csrf']
-        [417, {}, []]
+        [417, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
       else
         @app.call(env)
       end

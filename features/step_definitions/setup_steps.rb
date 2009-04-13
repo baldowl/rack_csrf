@@ -20,8 +20,9 @@ Given /^a Rack setup with the anti\-CSRF middleware$/ do
 end
 
 When /^I insert the anti\-CSRF middleware into the rack$/ do
+  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf
-  @rack_builder.run(lambda {|env| [200, {}, 'Hello world!']})
+  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end
 
