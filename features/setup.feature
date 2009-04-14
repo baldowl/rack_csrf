@@ -13,3 +13,8 @@ Feature: Setup of the middleware
     Given a Rack setup without the session middleware
     When I insert the anti-CSRF middleware into the rack
     Then I get an error message
+
+  Scenario: Setup with :raise option
+    Given a Rack setup with the session middleware
+    When I insert the anti-CSRF middleware with the :raise option into the rack
+    Then I get a fully functional rack

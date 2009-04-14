@@ -19,9 +19,22 @@ Given /^a Rack setup with the anti\-CSRF middleware$/ do
   When 'I insert the anti-CSRF middleware into the rack'
 end
 
+Given /^a Rack setup with the anti\-CSRF middleware and the :raise option$/ do
+  Given 'a Rack setup with the session middleware'
+  @rack_builder.use CsrfFaker
+  When 'I insert the anti-CSRF middleware with the :raise option into the rack'
+end
+
 When /^I insert the anti\-CSRF middleware into the rack$/ do
   @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf
+  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
+  @app = @rack_builder.to_app
+end
+
+When /^I insert the anti\-CSRF middleware with the :raise option into the rack$/ do
+  @rack_builder.use Rack::Lint
+  @rack_builder.use Rack::Csrf, :raise => true
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end
