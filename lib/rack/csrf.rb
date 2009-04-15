@@ -1,5 +1,9 @@
 require 'rack'
-require 'webrick/utils'
+begin
+  require 'securerandom'
+rescue LoadError
+  require File.dirname(__FILE__) + '/vendor/securerandom'
+end
 
 module Rack
   class Csrf
@@ -29,7 +33,7 @@ module Rack
     end
 
     def self.csrf_token(env)
-      env['rack.session']['rack.csrf'] ||= WEBrick::Utils.random_string(32)
+      env['rack.session']['rack.csrf'] ||= SecureRandom.base64(32)
     end
 
     def self.csrf_tag(env)

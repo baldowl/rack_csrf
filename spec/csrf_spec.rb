@@ -50,7 +50,8 @@ describe Rack::Csrf do
     end
 
     it "should have the csrf_token's output" do
-      @tag.should =~ /value="#{Rack::Csrf.csrf_token(@env)}"/
+      quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.csrf_token(@env)}")
+      @tag.should =~ /#{quoted_value}/
     end
   end
 end
