@@ -13,6 +13,8 @@ module Rack
     def initialize(app, opts = {})
       @app = app
       @raisable = opts[:raise] || false
+      @checkable = opts[:methods] || %w(POST PUT DELETE)
+      @checkable.map {|s| s.upcase!}
     end
 
     def call(env)
@@ -20,7 +22,7 @@ module Rack
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
       req = Rack::Request.new(env)
-      untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
+      untouchable = !@checkable.include?(req.request_method) ||
         req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf']
       if untouchable
         @app.call(env)

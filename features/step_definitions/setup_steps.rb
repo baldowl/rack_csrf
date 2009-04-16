@@ -13,28 +13,48 @@ class CsrfFaker
   end
 end
 
+# Yes, they're not as DRY as possible, but I think they're more readable than
+# a single step definition with a few captures and more complex checkings.
+
 Given /^a Rack setup with the anti\-CSRF middleware$/ do
   Given 'a Rack setup with the session middleware'
   @rack_builder.use CsrfFaker
-  When 'I insert the anti-CSRF middleware into the rack'
+  When 'I insert the anti-CSRF middleware'
 end
 
 Given /^a Rack setup with the anti\-CSRF middleware and the :raise option$/ do
   Given 'a Rack setup with the session middleware'
   @rack_builder.use CsrfFaker
-  When 'I insert the anti-CSRF middleware with the :raise option into the rack'
+  When 'I insert the anti-CSRF middleware with the :raise option'
 end
 
-When /^I insert the anti\-CSRF middleware into the rack$/ do
+Given /^a Rack setup with the anti\-CSRF middleware and the :methods option$/ do |table|
+  Given 'a Rack setup with the session middleware'
+  @rack_builder.use CsrfFaker
+  When 'I insert the anti-CSRF middleware with the :methods option', table
+end
+
+# Yes, they're not as DRY as possible, but I think they're more readable than
+# a single step definition with a few captures and more complex checkings.
+
+When /^I insert the anti\-CSRF middleware$/ do
   @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end
 
-When /^I insert the anti\-CSRF middleware with the :raise option into the rack$/ do
+When /^I insert the anti\-CSRF middleware with the :raise option$/ do
   @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :raise => true
+  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
+  @app = @rack_builder.to_app
+end
+
+When /^I insert the anti\-CSRF middleware with the :methods option$/ do |table|
+  checkable = table.hashes.collect {|t| t.values}.flatten
+  @rack_builder.use Rack::Lint
+  @rack_builder.use Rack::Csrf, :methods => checkable
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end
