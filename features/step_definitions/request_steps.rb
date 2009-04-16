@@ -7,6 +7,9 @@ When /^it receives a GET request (with|without) the CSRF token$/ do |prep|
   @response = Rack::MockRequest.new(@app).get(url)
 end
 
+# Yes, they're not as DRY as possible, but I think they're more readable than
+# a single step definition with a few captures and more complex checkings.
+
 When /^it receives a (POST|PUT|DELETE) request without the CSRF token$/ do |http_method|
   http_method.downcase!
   begin
@@ -30,26 +33,4 @@ When /^it receives a (POST|PUT|DELETE) request with the wrong CSRF token$/ do |h
   rescue Exception => e
     @exception = e
   end
-end
-
-Then /^it lets it pass untouched$/ do
-  @response.should be_ok
-  @response.should =~ /Hello world!/
-end
-
-Then /^it responds with 417$/ do
-  @response.status.should == 417
-end
-
-Then /^the response body is empty$/ do
-  @response.body.should be_empty
-end
-
-Then /^there is no response$/ do
-  @response.should be_nil
-end
-
-Then /^an exception is climbing up the stack$/ do
-  @exception.should_not be_nil
-  @exception.should be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end

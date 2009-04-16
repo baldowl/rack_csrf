@@ -1,9 +1,5 @@
 Feature: Setup of the middleware
 
-  As a developer
-  I want to insert the middleware into the rack
-  So that I can use the anti-CSRF functionality
-
   Scenario: Simple setup with session support
     Given a Rack setup with the session middleware
     When I insert the anti-CSRF middleware into the rack
