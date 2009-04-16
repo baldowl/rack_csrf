@@ -12,7 +12,7 @@ module Rack
 
     def initialize(app, opts = {})
       @app = app
-      @opts = opts
+      @raisable = opts[:raise] || false
     end
 
     def call(env)
@@ -20,11 +20,13 @@ module Rack
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
       req = Rack::Request.new(env)
-      if %w(POST PUT DELETE).include?(req.request_method) && req.POST[self.class.csrf_field] != env['rack.session']['rack.csrf']
-        raise InvalidCsrfToken if @opts[:raise]
-        [417, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
-      else
+      untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
+        req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf']
+      if untouchable
         @app.call(env)
+      else
+        raise InvalidCsrfToken if @raisable
+        [417, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
       end
     end
 
