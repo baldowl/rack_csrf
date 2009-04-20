@@ -5,6 +5,12 @@ describe Rack::Csrf do
     it "should be '_csrf'" do
       Rack::Csrf.csrf_field.should == '_csrf'
     end
+
+    it "should be the value of :field option" do
+      fakeapp = [200, {}, []]
+      Rack::Csrf.new fakeapp, :field => 'whatever'
+      Rack::Csrf.csrf_field.should == 'whatever'
+    end
   end
 
   describe '#csrf_token' do

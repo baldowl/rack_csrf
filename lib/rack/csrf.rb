@@ -10,11 +10,14 @@ module Rack
     class SessionUnavailable < StandardError; end
     class InvalidCsrfToken < StandardError; end
 
+    @@field = '_csrf'
+
     def initialize(app, opts = {})
       @app = app
       @raisable = opts[:raise] || false
       @skippable = opts[:skip] || []
       @skippable.map {|s| s.downcase!}
+      @@field = opts[:field] if opts[:field]
     end
 
     def call(env)
@@ -34,7 +37,7 @@ module Rack
     end
 
     def self.csrf_field
-      '_csrf'
+      @@field
     end
 
     def self.csrf_token(env)
