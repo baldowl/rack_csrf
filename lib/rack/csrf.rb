@@ -13,8 +13,8 @@ module Rack
     def initialize(app, opts = {})
       @app = app
       @raisable = opts[:raise] || false
-      @checkable = opts[:methods] || %w(POST PUT DELETE)
-      @checkable.map {|s| s.upcase!}
+      @skippable = opts[:skip] || []
+      @skippable.map {|s| s.downcase!}
     end
 
     def call(env)
@@ -22,8 +22,9 @@ module Rack
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
       req = Rack::Request.new(env)
-      untouchable = !@checkable.include?(req.request_method) ||
-        req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf']
+      untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
+        req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf'] ||
+        skip_checking(req)
       if untouchable
         @app.call(env)
       else
@@ -42,6 +43,12 @@ module Rack
 
     def self.csrf_tag(env)
       %Q(<input type="hidden" name="#{csrf_field}" value="#{csrf_token(env)}" />)
+    end
+
+    protected
+
+    def skip_checking request
+      @skippable.include?(request.request_method.downcase + ':' + request.path_info)
     end
   end
 end

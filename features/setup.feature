@@ -15,10 +15,10 @@ Feature: Setup of the middleware
     When I insert the anti-CSRF middleware with the :raise option
     Then I get a fully functional rack
 
-  Scenario: Setup with the :methods option
+  Scenario: Setup with the :skip option
     Given a Rack setup with the session middleware
-    When I insert the anti-CSRF middleware with the :methods option
-      | checkable |
-      | POST      |
-      | PUT       |
+    When I insert the anti-CSRF middleware with the :skip option
+      | route              |
+      | POST:/not_checking |
+      | PUT:/is_wrong      |
     Then I get a fully functional rack

@@ -28,10 +28,10 @@ Given /^a Rack setup with the anti\-CSRF middleware and the :raise option$/ do
   When 'I insert the anti-CSRF middleware with the :raise option'
 end
 
-Given /^a Rack setup with the anti\-CSRF middleware and the :methods option$/ do |table|
+Given /^a Rack setup with the anti\-CSRF middleware and the :skip option$/ do |table|
   Given 'a Rack setup with the session middleware'
   @rack_builder.use CsrfFaker
-  When 'I insert the anti-CSRF middleware with the :methods option', table
+  When 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
 # Yes, they're not as DRY as possible, but I think they're more readable than
@@ -51,10 +51,10 @@ When /^I insert the anti\-CSRF middleware with the :raise option$/ do
   @app = @rack_builder.to_app
 end
 
-When /^I insert the anti\-CSRF middleware with the :methods option$/ do |table|
-  checkable = table.hashes.collect {|t| t.values}.flatten
+When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
+  skippable = table.hashes.collect {|t| t.values}.flatten
   @rack_builder.use Rack::Lint
-  @rack_builder.use Rack::Csrf, :methods => checkable
+  @rack_builder.use Rack::Csrf, :skip => skippable
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end
