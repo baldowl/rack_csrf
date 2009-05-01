@@ -1,6 +1,6 @@
 Feature: Skipping the check for some specific routes
 
-  Scenario Outline: Skipping the check for a some requests
+  Scenario Outline: Skipping the check for some requests
     Given a Rack setup with the anti-CSRF middleware and the :skip option
       | pair               |
       | POST:/not_checking |
