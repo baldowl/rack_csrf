@@ -34,6 +34,12 @@ Given /^a Rack setup with the anti\-CSRF middleware and the :skip option$/ do |t
   When 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
+Given /^a Rack setup with the anti\-CSRF middleware and the :field option$/ do
+  Given 'a Rack setup with the session middleware'
+  @rack_builder.use CsrfFaker
+  When 'I insert the anti-CSRF middleware with the :field option'
+end
+
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
@@ -55,6 +61,13 @@ When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
   skippable = table.hashes.collect {|t| t.values}.flatten
   @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :skip => skippable
+  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
+  @app = @rack_builder.to_app
+end
+
+When /^I insert the anti\-CSRF middleware with the :field option$/ do
+  @rack_builder.use Rack::Lint
+  @rack_builder.use Rack::Csrf, :field => 'fantasy_name'
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
 end

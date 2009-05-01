@@ -22,3 +22,8 @@ Feature: Setup of the middleware
       | POST:/not_checking |
       | PUT:/is_wrong      |
     Then I get a fully functional rack
+
+  Scenario: Setup with the :field option
+    Given a Rack setup with the session middleware
+    When I insert the anti-CSRF middleware with the :field option
+    Then I get a fully functional rack
