@@ -11,7 +11,7 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = %w(-O spec/spec.opts)
 end
 
-Echoe.new('rack_csrf', '1.0.0') do |s|
+Echoe.new('rack_csrf', '1.0.1') do |s|
   s.author = 'Emanuele Vicentini'
   s.email = 'emanuele.vicentini@gmail.com'
   s.summary = 'Anti-CSRF Rack middleware'

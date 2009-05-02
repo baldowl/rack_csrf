@@ -13,6 +13,7 @@ features/step_definitions/request_steps.rb
 features/step_definitions/response_steps.rb
 features/step_definitions/setup_steps.rb
 features/support/env.rb
+features/variation_on_field_name.feature
 lib/rack/csrf.rb
 lib/rack/vendor/securerandom.rb
 LICENSE.rdoc

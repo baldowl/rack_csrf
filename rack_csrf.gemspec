@@ -1,14 +1,14 @@
 --- !ruby/object:Gem::Specification 
 name: rack_csrf
 version: !ruby/object:Gem::Version 
-  version: 1.0.0
+  version: 1.0.1
 platform: ruby
 authors: 
 - Emanuele Vicentini
 autorequire: 
 bindir: bin
 
-date: 2009-04-22 00:00:00 +02:00
+date: 2009-05-02 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -86,6 +86,7 @@ files:
 - features/step_definitions/response_steps.rb
 - features/step_definitions/setup_steps.rb
 - features/support/env.rb
+- features/variation_on_field_name.feature
 - lib/rack/csrf.rb
 - lib/rack/vendor/securerandom.rb
 - LICENSE.rdoc
