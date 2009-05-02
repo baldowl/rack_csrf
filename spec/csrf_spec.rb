@@ -26,13 +26,13 @@ describe Rack::Csrf do
       @env['rack.session'].should be_empty
       Rack::Csrf.csrf_token(@env)
       @env['rack.session'].should_not be_empty
-      @env['rack.session']['rack.csrf'].should_not be_empty
+      @env['rack.session']['csrf.token'].should_not be_empty
     end
 
     it 'should get the token from the session if it is already there' do
       @env['rack.session'].should be_empty
       csrf_token = Rack::Csrf.csrf_token(@env)
-      csrf_token.should == @env['rack.session']['rack.csrf']
+      csrf_token.should == @env['rack.session']['csrf.token']
       csrf_token.should == Rack::Csrf.csrf_token(@env)
     end
   end

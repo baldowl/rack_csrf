@@ -27,7 +27,7 @@ module Rack
       self.class.csrf_token(env)
       req = Rack::Request.new(env)
       untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
-        req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf'] ||
+        req.POST[self.class.csrf_field] == env['rack.session']['csrf.token'] ||
         skip_checking(req)
       if untouchable
         @app.call(env)
@@ -42,7 +42,7 @@ module Rack
     end
 
     def self.csrf_token(env)
-      env['rack.session']['rack.csrf'] ||= SecureRandom.base64(32)
+      env['rack.session']['csrf.token'] ||= SecureRandom.base64(32)
     end
 
     def self.csrf_tag(env)
