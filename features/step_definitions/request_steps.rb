@@ -31,7 +31,8 @@ end
 When /^it receives a (POST|PUT|DELETE) request with the right CSRF token$/ do |http_method|
   http_method.downcase!
   @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
-    :input => "#{Rack::Csrf.csrf_field}=right_token"
+    :input => "#{Rack::Csrf.csrf_field}=right_token",
+    'rack.session' => {'rack.csrf' => 'right_token'}
 end
 
 When /^it receives a (POST|PUT|DELETE) request with the wrong CSRF token$/ do |http_method|

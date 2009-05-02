@@ -1,16 +1,6 @@
 Given /^a Rack setup (with|without) the session middleware$/ do |prep|
   @rack_builder = Rack::Builder.new
-  @rack_builder.use Rack::Session::Cookie if prep == 'with'
-end
-
-class CsrfFaker
-  def initialize(app)
-    @app = app
-  end
-  def call(env)
-    env['rack.session']['rack.csrf'] = 'right_token'
-    @app.call(env)
-  end
+  @rack_builder.use FakeSession if prep == 'with'
 end
 
 # Yes, they're not as DRY as possible, but I think they're more readable than
@@ -18,25 +8,21 @@ end
 
 Given /^a Rack setup with the anti\-CSRF middleware$/ do
   Given 'a Rack setup with the session middleware'
-  @rack_builder.use CsrfFaker
   When 'I insert the anti-CSRF middleware'
 end
 
 Given /^a Rack setup with the anti\-CSRF middleware and the :raise option$/ do
   Given 'a Rack setup with the session middleware'
-  @rack_builder.use CsrfFaker
   When 'I insert the anti-CSRF middleware with the :raise option'
 end
 
 Given /^a Rack setup with the anti\-CSRF middleware and the :skip option$/ do |table|
   Given 'a Rack setup with the session middleware'
-  @rack_builder.use CsrfFaker
   When 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
 Given /^a Rack setup with the anti\-CSRF middleware and the :field option$/ do
   Given 'a Rack setup with the session middleware'
-  @rack_builder.use CsrfFaker
   When 'I insert the anti-CSRF middleware with the :field option'
 end
 

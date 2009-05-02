@@ -24,6 +24,7 @@ module Rack
       unless env['rack.session']
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
+      self.class.csrf_token(env)
       req = Rack::Request.new(env)
       untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
         req.POST[self.class.csrf_field] == env['rack.session']['rack.csrf'] ||
