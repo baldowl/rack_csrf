@@ -15,8 +15,7 @@ module Rack
     def initialize(app, opts = {})
       @app = app
       @raisable = opts[:raise] || false
-      @skippable = opts[:skip] || []
-      @skippable.map {|s| s.downcase!}
+      @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
     end
 
@@ -52,7 +51,9 @@ module Rack
     protected
 
     def skip_checking request
-      @skippable.include?(request.request_method.downcase + ':' + request.path_info)
+      @skippable.any? do |route|
+        route =~ (request.request_method + ':' + request.path_info)
+      end
     end
   end
 end

@@ -29,10 +29,14 @@ The following options allow you to tweak Rack::Csrf.
 
 [<tt>:skip</tt>]
   By default, Rack::Csrf checks every POST, PUT and DELETE request; passing an
-  array of HTTP method/URL to this option you can choose what to let pass
-  unchecked:
+  array of HTTP method/URL (regular expressions allowed) to this option you
+  can choose what to let pass unchecked:
 
-    use Rack::Csrf, :skip => ['POST:/not_checking', 'PUT:/me_too']
+    use Rack::Csrf, :skip => ['POST:/not_checking', 'PUT:/me_too',
+      'DELETE:/cars/.*\.xml']
+
+  Please, note that the regular expression are not escaped and it is your duty
+  to write them correctly.
 
 [<tt>:field</tt>]
   Default field name (see below) is <tt>_csrf</tt>; you can adapt it to
