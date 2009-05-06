@@ -27,6 +27,8 @@ The following options allow you to tweak Rack::Csrf.
   an empty response, Rack::Csrf will raise an exception of class
   Rack::Csrf::InvalidCsrfToken.
 
+  Default value: false.
+
 [<tt>:skip</tt>]
   By default, Rack::Csrf checks every POST, PUT and DELETE request; passing an
   array of HTTP method/URL (regular expressions allowed) to this option you
@@ -37,6 +39,8 @@ The following options allow you to tweak Rack::Csrf.
 
   Please, note that the regular expression are not escaped and it is your duty
   to write them correctly.
+
+  Default value: empty.
 
 [<tt>:field</tt>]
   Default field name (see below) is <tt>_csrf</tt>; you can adapt it to
