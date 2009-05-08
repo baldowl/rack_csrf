@@ -40,6 +40,8 @@ describe Rack::Csrf do
   describe '#csrf_tag' do
     before do
       @env = {'rack.session' => {}}
+      fakeapp = [200, {}, []]
+      Rack::Csrf.new fakeapp, :field => 'whatever'
       @tag = Rack::Csrf.csrf_tag(@env)
     end
 
