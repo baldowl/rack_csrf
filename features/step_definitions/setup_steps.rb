@@ -1,4 +1,4 @@
-Given /^a Rack setup (with|without) the session middleware$/ do |prep|
+Given /^a rack (with|without) the session middleware$/ do |prep|
   @rack_builder = Rack::Builder.new
   @rack_builder.use FakeSession if prep == 'with'
 end
@@ -6,23 +6,23 @@ end
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
-Given /^a Rack setup with the anti\-CSRF middleware$/ do
-  Given 'a Rack setup with the session middleware'
+Given /^a rack with the anti\-CSRF middleware$/ do
+  Given 'a rack with the session middleware'
   When 'I insert the anti-CSRF middleware'
 end
 
-Given /^a Rack setup with the anti\-CSRF middleware and the :raise option$/ do
-  Given 'a Rack setup with the session middleware'
+Given /^a rack with the anti\-CSRF middleware and the :raise option$/ do
+  Given 'a rack with the session middleware'
   When 'I insert the anti-CSRF middleware with the :raise option'
 end
 
-Given /^a Rack setup with the anti\-CSRF middleware and the :skip option$/ do |table|
-  Given 'a Rack setup with the session middleware'
+Given /^a rack with the anti\-CSRF middleware and the :skip option$/ do |table|
+  Given 'a rack with the session middleware'
   When 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
-Given /^a Rack setup with the anti\-CSRF middleware and the :field option$/ do
-  Given 'a Rack setup with the session middleware'
+Given /^a rack with the anti\-CSRF middleware and the :field option$/ do
+  Given 'a rack with the session middleware'
   When 'I insert the anti-CSRF middleware with the :field option'
 end
 

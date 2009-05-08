@@ -1,7 +1,7 @@
 Feature: Skipping the check for some specific routes
 
   Scenario Outline: Skipping the check for some requests
-    Given a Rack setup with the anti-CSRF middleware and the :skip option
+    Given a rack with the anti-CSRF middleware and the :skip option
       | pair                 |
       | POST:/not_checking   |
       | PUT:/is_wrong        |
@@ -19,7 +19,7 @@ Feature: Skipping the check for some specific routes
       | DELETE | /cars/abc123.xml                |
 
   Scenario Outline: Keep checking the requests for other method/path pairs
-    Given a Rack setup with the anti-CSRF middleware and the :skip option
+    Given a rack with the anti-CSRF middleware and the :skip option
       | pair                 |
       | POST:/not_checking   |
       | PUT:/is_wrong        |
