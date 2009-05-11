@@ -5,6 +5,7 @@ example/config.ru
 example/views/form.erb
 example/views/form_not_working.erb
 example/views/response.erb
+features/browser_only.feature
 features/empty_responses.feature
 features/raising_exception.feature
 features/setup.feature

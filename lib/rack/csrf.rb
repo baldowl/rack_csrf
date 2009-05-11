@@ -17,6 +17,7 @@ module Rack
       @raisable = opts[:raise] || false
       @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
+      @browser_only = opts[:browser_only] || false
     end
 
     def call(env)
@@ -27,7 +28,7 @@ module Rack
       req = Rack::Request.new(env)
       untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
         req.POST[self.class.csrf_field] == env['rack.session']['csrf.token'] ||
-        skip_checking(req)
+        skip_checking(req) || (@browser_only && !from_a_browser(req))
       if untouchable
         @app.call(env)
       else
@@ -54,6 +55,14 @@ module Rack
       @skippable.any? do |route|
         route =~ (request.request_method + ':' + request.path_info)
       end
+    end
+
+    def from_a_browser request
+      browser_type = ['text/html', 'application/xhtml+xml', 'xhtml',
+        'application/x-www-form-urlencoded',
+        'multipart/form-data',
+        'text/plain', 'txt']
+      browser_type.include?(request.media_type)
     end
   end
 end

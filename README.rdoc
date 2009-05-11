@@ -37,14 +37,21 @@ The following options allow you to tweak Rack::Csrf.
     use Rack::Csrf, :skip => ['POST:/not_checking', 'PUT:/me_too',
       'DELETE:/cars/.*\.xml']
 
-  Please, note that the regular expression are not escaped and it is your duty
-  to write them correctly.
+  Please, note that the regular expressions are not escaped and it is your
+  duty to write them correctly.
 
   Default value: empty.
 
 [<tt>:field</tt>]
   Default field name (see below) is <tt>_csrf</tt>; you can adapt it to
   specific needs.
+
+[<tt>:browser_only</tt>]
+  Set it to true to inspect only requests with Content-Type typically produced
+  only by web browser. This means that curl, Active Resource, etc. can send
+  any request without worring about the token.
+
+  Default value: false.
 
 == Helpers
 

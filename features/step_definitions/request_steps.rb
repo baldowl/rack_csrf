@@ -28,6 +28,16 @@ When /^it receives a (POST|PUT|DELETE) request for (.+) without the CSRF token$/
   end
 end
 
+When /^it receives a (POST|PUT|DELETE) request without the CSRF token from a browser$/ do |http_method|
+  http_method.downcase!
+  begin
+    @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
+      'CONTENT_TYPE' => 'text/html'
+  rescue Exception => e
+    @exception = e
+  end
+end
+
 When /^it receives a (POST|PUT|DELETE) request with the right CSRF token$/ do |http_method|
   http_method.downcase!
   @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
