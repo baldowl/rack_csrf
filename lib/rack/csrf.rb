@@ -14,10 +14,17 @@ module Rack
 
     def initialize(app, opts = {})
       @app = app
+
       @raisable = opts[:raise] || false
       @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
       @browser_only = opts[:browser_only] || false
+
+      @http_verbs = %w(POST PUT DELETE)
+      @browser_content_types = ['text/html', 'application/xhtml+xml', 'xhtml',
+        'application/x-www-form-urlencoded',
+        'multipart/form-data',
+        'text/plain', 'txt']
     end
 
     def call(env)
@@ -26,7 +33,7 @@ module Rack
       end
       self.class.csrf_token(env)
       req = Rack::Request.new(env)
-      untouchable = !%w(POST PUT DELETE).include?(req.request_method) ||
+      untouchable = !@http_verbs.include?(req.request_method) ||
         req.POST[self.class.csrf_field] == env['rack.session']['csrf.token'] ||
         skip_checking(req) || (@browser_only && !from_a_browser(req))
       if untouchable
@@ -58,11 +65,7 @@ module Rack
     end
 
     def from_a_browser request
-      browser_type = ['text/html', 'application/xhtml+xml', 'xhtml',
-        'application/x-www-form-urlencoded',
-        'multipart/form-data',
-        'text/plain', 'txt']
-      browser_type.include?(request.media_type)
+      @browser_content_types.include?(request.media_type)
     end
   end
 end
