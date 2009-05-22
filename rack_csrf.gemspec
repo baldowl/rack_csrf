@@ -1,14 +1,14 @@
 --- !ruby/object:Gem::Specification 
 name: rack_csrf
 version: !ruby/object:Gem::Version 
-  version: 1.0.1
+  version: 1.1.0
 platform: ruby
 authors: 
 - Emanuele Vicentini
 autorequire: 
 bindir: bin
 
-date: 2009-05-02 00:00:00 +02:00
+date: 2009-05-22 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -78,6 +78,7 @@ files:
 - example/views/form.erb
 - example/views/form_not_working.erb
 - example/views/response.erb
+- features/browser_only.feature
 - features/empty_responses.feature
 - features/raising_exception.feature
 - features/setup.feature
@@ -126,7 +127,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: rackcsrf
-rubygems_version: 1.3.2
+rubygems_version: 1.3.3
 specification_version: 3
 summary: Anti-CSRF Rack middleware
 test_files: []
