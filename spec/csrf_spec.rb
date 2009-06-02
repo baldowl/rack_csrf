@@ -1,13 +1,13 @@
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 describe Rack::Csrf do
   describe '#csrf_field' do
-    it "should be '_csrf'" do
+    it "should be '_csrf' by default" do
       Rack::Csrf.csrf_field.should == '_csrf'
     end
 
     it "should be the value of :field option" do
-      fakeapp = [200, {}, []]
+      fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
       Rack::Csrf.csrf_field.should == 'whatever'
     end
@@ -22,25 +22,31 @@ describe Rack::Csrf do
       Rack::Csrf.csrf_token(@env).length.should >= 32
     end
 
-    it 'should store the token inside the session if it is not already there' do
-      @env['rack.session'].should be_empty
-      Rack::Csrf.csrf_token(@env)
-      @env['rack.session'].should_not be_empty
-      @env['rack.session']['csrf.token'].should_not be_empty
+    context 'when the session does not already contain the token' do
+      it 'should store the token inside the session' do
+        @env['rack.session'].should be_empty
+        csrf_token = Rack::Csrf.csrf_token(@env)
+        @env['rack.session'].should_not be_empty
+        @env['rack.session']['csrf.token'].should_not be_empty
+        csrf_token.should == @env['rack.session']['csrf.token']
+      end
     end
 
-    it 'should get the token from the session if it is already there' do
-      @env['rack.session'].should be_empty
-      csrf_token = Rack::Csrf.csrf_token(@env)
-      csrf_token.should == @env['rack.session']['csrf.token']
-      csrf_token.should == Rack::Csrf.csrf_token(@env)
+    context 'when the session already contains the token' do
+      before do
+        Rack::Csrf.csrf_token @env
+      end
+      it 'should get the token from the session' do
+        @env['rack.session'].should_not be_empty
+        @env['rack.session']['csrf.token'].should == Rack::Csrf.csrf_token(@env)
+      end
     end
   end
 
   describe '#csrf_tag' do
     before do
       @env = {'rack.session' => {}}
-      fakeapp = [200, {}, []]
+      fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
       @tag = Rack::Csrf.csrf_tag(@env)
     end
