@@ -1,16 +1,9 @@
 require 'rubygems'
 require 'spec/expectations'
 
-require File.dirname(__FILE__) + "/../../lib/rack/csrf"
+$: << File.join(File.dirname(__FILE__), '../../lib')
+$: << File.join(File.dirname(__FILE__))
 
-# Simulated session used just to be able to insert data into it without seeing
-# them wiped out.
-class FakeSession
-  def initialize(app)
-    @app = app
-  end
-  def call(env)
-    env['rack.session'] ||= Hash.new
-    @app.call(env)
-  end
-end
+require 'rack/csrf'
+
+require 'fake_session'
