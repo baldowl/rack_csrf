@@ -23,9 +23,11 @@ possibly work.
 The following options allow you to tweak Rack::Csrf.
 
 [<tt>:raise</tt>]
-  Set it to true to change the handling of bad request: instead of producing
+  Set it to true to change the handling of bad requests: instead of producing
   an empty response, Rack::Csrf will raise an exception of class
   Rack::Csrf::InvalidCsrfToken.
+
+    use Rack::Csrf, :raise => true
 
   Default value: false.
 
@@ -46,10 +48,16 @@ The following options allow you to tweak Rack::Csrf.
   Default field name (see below) is <tt>_csrf</tt>; you can adapt it to
   specific needs.
 
+    use Rack::Csrf, :field => '_my_own_csrf_field'
+
+  Default value: _csrf
+
 [<tt>:browser_only</tt>]
   Set it to true to inspect only requests with Content-Type typically produced
-  only by web browser. This means that curl, Active Resource, etc. can send
+  only by web browsers. This means that curl, Active Resource, etc. can send
   any request without worring about the token.
+
+    use Rack::Csrf, :browser_only => true
 
   Default value: false.
 
