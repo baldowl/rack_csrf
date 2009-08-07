@@ -3,7 +3,7 @@ require 'cucumber/rake/task'
 require 'spec/rake/spectask'
 require 'echoe'
 
-Cucumber::Rake::Task.new do |c|
+Cucumber::Rake::Task.new :features do |c|
   c.cucumber_opts = '--profile default'
 end
 
