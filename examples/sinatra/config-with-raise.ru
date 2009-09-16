@@ -1,5 +1,6 @@
 require 'sinatra'
-require File.dirname(__FILE__) + '/../lib/rack/csrf'
+$: << File.join(File.dirname(__FILE__), '../../lib')
+require 'rack/csrf'
 
 require 'erb'
 require 'app'

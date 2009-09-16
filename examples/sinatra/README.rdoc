@@ -1,0 +1,10 @@
+= How to use Rack::Csrf with Sinatra
+
+This is a mini Sinatra application with two slightly different rackup files.
+Beside Rack you only need Sinatra to try them.
+
+    $ sudo gem install sinatra
+    $ thin -R config.ru -p 3000 start
+    $ thin -R config-with-raise.ru -p 3000 start
+
+Tested with Sinatra 0.9.4.
