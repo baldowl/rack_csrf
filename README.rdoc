@@ -4,6 +4,9 @@ This is just a small Rack middleware whose only goal is to lessen the hazards
 posed by CSRF attacks by trying to ensure that all requests of particular
 types come from the right client, not from a mischievous impersonator.
 
+Rack::Csrf is not tailored to any particular web framework, so it can be used
+with your preferred Rack-based framework.
+
 == Usage
 
 First of all, beyond Rack itself, there is only one prerequisite: you must set
@@ -81,9 +84,23 @@ token.
 
 == Working examples
 
-In the +example+ directory there is a mini Sinatra application with two
-slightly different rackup files. Beside Rack you only need Sinatra to try
-them, but Rack::Csrf is not tailored to any particular web framework.
+In the +examples+ directory there are some small, working web applications
+written with different Rack-based frameworks. They are named after the used
+framework; see the various README files for other details.
+
+== Contributing
+
+If you want to help:
+
+* fork the project[http://github.com/baldowl/rack_csrf] on GitHub;
+* work in a topic branch;
+* add features/specs for your additions or bug fixes;
+* write your additions/bug fixes;
+* commit;
+* send me a pull request for the topic branch.
+
+If you have any issue, please post them on the {project's issue
+list}[http://github.com/baldowl/rack_csrf] on GitHub.
 
 == Warning! Warning! Warning!
 
