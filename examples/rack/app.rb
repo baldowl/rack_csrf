@@ -38,7 +38,7 @@ class LittleApp
       end
     elsif req.post?
       utterance = req['utterance']
-      csrf = req['_csrf']
+      csrf = req[Rack::Csrf.csrf_field]
       Rack::Response.new(@response.result(binding)).finish
     end
   end
