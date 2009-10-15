@@ -26,7 +26,7 @@ Feature: Skipping the check for some specific routes
       | POST:/not_.*\.json   |
       | DELETE:/cars/.*\.xml |
     When it receives a <method> request for <path> without the CSRF token
-    Then it responds with 417
+    Then it responds with 403
     And the response body is empty
 
     Examples:

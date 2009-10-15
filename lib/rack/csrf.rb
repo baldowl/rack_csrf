@@ -40,7 +40,7 @@ module Rack
         @app.call(env)
       else
         raise InvalidCsrfToken if @raisable
-        [417, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
+        [403, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
       end
     end
 
