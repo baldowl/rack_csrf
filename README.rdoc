@@ -107,3 +107,7 @@ list}[http://github.com/baldowl/rack_csrf] on GitHub.
 I cannot stress enough that this middleware is not a bulletproof vest or a
 panacea for the CSRF plague; it is just an *aid* and by using it you cannot
 forgo responsibilities for keeping your application as safe as possible.
+
+== Copyright
+
+Copyright (c) 2009, 2010 Emanuele Vicentini. See LICENSE.rdoc for details.
