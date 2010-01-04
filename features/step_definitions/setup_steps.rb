@@ -1,5 +1,6 @@
 Given /^a rack (with|without) the session middleware$/ do |prep|
   @rack_builder = Rack::Builder.new
+  @rack_builder.use Rack::Lint
   @rack_builder.use FakeSession if prep == 'with'
 end
 
@@ -35,43 +36,33 @@ end
 # a single step definition with a few captures and more complex checkings.
 
 When /^I insert the anti\-CSRF middleware$/ do
-  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :raise option$/ do
-  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :raise => true
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
   skippable = table.hashes.collect {|t| t.values}.flatten
-  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :skip => skippable
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :field option$/ do
-  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :field => 'fantasy_name'
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :browser_only option$/ do
-  @rack_builder.use Rack::Lint
   @rack_builder.use Rack::Csrf, :browser_only => true
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
@@ -81,4 +72,9 @@ end
 
 Then /^I get an error message$/ do
   lambda {Rack::MockRequest.new(@app).get('/')}.should raise_error(Rack::Csrf::SessionUnavailable, 'Rack::Csrf depends on session middleware')
+end
+
+def toy_app
+  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
+  @app = @rack_builder.to_app
 end
