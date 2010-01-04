@@ -39,6 +39,7 @@ When /^I insert the anti\-CSRF middleware$/ do
   @rack_builder.use Rack::Csrf
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :raise option$/ do
@@ -46,6 +47,7 @@ When /^I insert the anti\-CSRF middleware with the :raise option$/ do
   @rack_builder.use Rack::Csrf, :raise => true
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
@@ -54,6 +56,7 @@ When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
   @rack_builder.use Rack::Csrf, :skip => skippable
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :field option$/ do
@@ -61,6 +64,7 @@ When /^I insert the anti\-CSRF middleware with the :field option$/ do
   @rack_builder.use Rack::Csrf, :field => 'fantasy_name'
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :browser_only option$/ do
@@ -68,6 +72,7 @@ When /^I insert the anti\-CSRF middleware with the :browser_only option$/ do
   @rack_builder.use Rack::Csrf, :browser_only => true
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
   @app = @rack_builder.to_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 Then /^I get a fully functional rack$/ do

@@ -37,6 +37,7 @@ Jeweler::Tasks.new do |gem|
   gem.rubyforge_project = 'rackcsrf'
   gem.add_dependency 'rack', '>= 0.9'
   gem.add_development_dependency 'cucumber', '>= 0.1.13'
+  gem.add_development_dependency 'rack-test'
   gem.add_development_dependency 'rspec'
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'

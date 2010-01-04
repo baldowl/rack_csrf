@@ -1,55 +1,46 @@
 When /^it receives a GET request (with|without) the CSRF token$/ do |prep|
-  if prep == 'with'
-    url = "/?#{Rack::Utils.build_query(Rack::Csrf.csrf_field => 'whatever')}"
-  else
-    url = '/'
-  end
-  @response = Rack::MockRequest.new(@app).get(url)
+  params = prep == 'with' ? {Rack::Csrf.csrf_field => 'whatever'} : {}
+  @browser.get '/', :params => params
 end
 
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
 When /^it receives a (POST|PUT|DELETE) request without the CSRF token$/ do |http_method|
-  http_method.downcase!
   begin
-    @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/'
+    @browser.request '/', :method => http_method
   rescue Exception => e
     @exception = e
   end
 end
 
 When /^it receives a (POST|PUT|DELETE) request for (.+) without the CSRF token$/ do |http_method, path|
-  http_method.downcase!
   begin
-    @response = Rack::MockRequest.new(@app).send http_method.to_sym, path
+    @browser.request path, :method => http_method
   rescue Exception => e
     @exception = e
   end
 end
 
-When /^it receives a (POST|PUT|DELETE) request without the CSRF token from a browser$/ do |http_method|
-  http_method.downcase!
+When /^it receives a (POST|PUT|DELETE) request without the CSRF token from something else$/ do |http_method|
   begin
-    @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
-      'CONTENT_TYPE' => 'text/html'
+    @browser.request '/', :method => http_method,
+      'CONTENT_TYPE' => 'application/xml'
   rescue Exception => e
     @exception = e
   end
 end
 
 When /^it receives a (POST|PUT|DELETE) request with the right CSRF token$/ do |http_method|
-  http_method.downcase!
-  @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
-    :input => "#{Rack::Csrf.csrf_field}=right_token",
-    'rack.session' => {'csrf.token' => 'right_token'}
+  @browser.request '/', :method => http_method,
+    'rack.session' => {'csrf.token' => 'right_token'},
+    :params => {Rack::Csrf.csrf_field => 'right_token'}
 end
 
 When /^it receives a (POST|PUT|DELETE) request with the wrong CSRF token$/ do |http_method|
-  http_method.downcase!
   begin
-    @response = Rack::MockRequest.new(@app).send http_method.to_sym, '/',
-      :input => "#{Rack::Csrf.csrf_field}=whatever"
+    @browser.request '/', :method => http_method,
+      :params => {Rack::Csrf.csrf_field => 'whatever'}
   rescue Exception => e
     @exception = e
   end
