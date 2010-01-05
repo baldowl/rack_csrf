@@ -22,15 +22,6 @@ When /^it receives a (POST|PUT|DELETE) request for (.+) without the CSRF token$/
   end
 end
 
-When /^it receives a (POST|PUT|DELETE) request without the CSRF token from something else$/ do |http_method|
-  begin
-    @browser.request '/', :method => http_method,
-      'CONTENT_TYPE' => 'application/xml'
-  rescue Exception => e
-    @exception = e
-  end
-end
-
 When /^it receives a (POST|PUT|DELETE) request with the right CSRF token$/ do |http_method|
   @browser.request '/', :method => http_method,
     'rack.session' => {'csrf.token' => 'right_token'},

@@ -27,8 +27,3 @@ Feature: Setup of the middleware
     Given a rack with the session middleware
     When I insert the anti-CSRF middleware with the :field option
     Then I get a fully functional rack
-
-  Scenario: Setup with the :browser_only option
-    Given a rack with the session middleware
-    When I insert the anti-CSRF middleware with the :browser_only option
-    Then I get a fully functional rack

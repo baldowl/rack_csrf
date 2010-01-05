@@ -55,14 +55,16 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: _csrf
 
-[<tt>:browser_only</tt>]
-  Set it to true to inspect only requests with Content-Type typically produced
-  only by web browsers. This means that curl, Active Resource, etc. can send
-  any request without worring about the token.
+The <tt>:browser_only</tt> option has been removed; you do not need to edit
+any rackup file because Rack::Csrf simply ignores unknown options. Changes
+introduced in Rack version 1.1.0 tighten the parsing of POST params, so
+requests need to have the right Content-Type (or none at all); these
+Content-Types are exactily those used also by browser and so there is no use
+for <tt>:browser_only</tt> anymore.
 
-    use Rack::Csrf, :browser_only => true
-
-  Default value: false.
+The ill devised <tt>:browser_only</tt> option could have been used to
+"protect" an API, but I think it might be better to use a combination of
+<tt>:skip</tt> and formatted URLs.
 
 == Helpers
 
