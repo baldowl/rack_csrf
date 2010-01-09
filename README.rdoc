@@ -57,9 +57,9 @@ The following options allow you to tweak Rack::Csrf.
 
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
-introduced in Rack version 1.1.0 tighten the parsing of POST params, so
+introduced in Rack version 1.1.0 tightened the parsing of POST params, so
 requests need to have the right Content-Type (or none at all); these
-Content-Types are exactily those used also by browser and so there is no use
+Content-Types are exactly those used also by browsers and so there is no use
 for <tt>:browser_only</tt> anymore.
 
 The ill devised <tt>:browser_only</tt> option could have been used to
