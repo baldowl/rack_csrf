@@ -44,5 +44,4 @@ Jeweler::Tasks.new do |gem|
   gem.test_files.clear
 end
 
-Jeweler::RubyforgeTasks.new
 Jeweler::GemcutterTasks.new
