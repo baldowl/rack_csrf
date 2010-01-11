@@ -45,3 +45,18 @@ Jeweler::Tasks.new do |gem|
 end
 
 Jeweler::GemcutterTasks.new
+
+desc <<-EOD
+Shows the changelog in Git between the given points.
+
+start -- defaults to the current version tag
+end   -- defaults to HEAD
+EOD
+task :changes, [:start, :end] do |t, args|
+  args.with_defaults :start => "v#{Rake.application.jeweler.version}",
+    :end => 'HEAD'
+  repo = Git.open Rake.application.jeweler.git_base_dir
+  repo.log(nil).between(args.start, args.end).each do |c|
+    puts c.message.split($/).first
+  end
+end
