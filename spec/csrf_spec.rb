@@ -14,58 +14,56 @@ describe Rack::Csrf do
   end
 
   describe '#csrf_token' do
-    before do
-      @env = {'rack.session' => {}}
-    end
+    let(:env) { {'rack.session' => {}} }
 
-    it 'should be at least 32 characters long' do
-      Rack::Csrf.csrf_token(@env).length.should >= 32
-    end
+    specify {Rack::Csrf.csrf_token(env).should have_at_least(32).characters}
 
     context 'when the session does not already contain the token' do
       it 'should store the token inside the session' do
-        @env['rack.session'].should be_empty
-        csrf_token = Rack::Csrf.csrf_token(@env)
-        @env['rack.session'].should_not be_empty
-        @env['rack.session']['csrf.token'].should_not be_empty
-        csrf_token.should == @env['rack.session']['csrf.token']
+        env['rack.session'].should be_empty
+        csrf_token = Rack::Csrf.csrf_token(env)
+        env['rack.session'].should_not be_empty
+        env['rack.session']['csrf.token'].should_not be_empty
+        csrf_token.should == env['rack.session']['csrf.token']
       end
     end
 
     context 'when the session already contains the token' do
       before do
-        Rack::Csrf.csrf_token @env
+        Rack::Csrf.csrf_token env
       end
+
       it 'should get the token from the session' do
-        @env['rack.session'].should_not be_empty
-        @env['rack.session']['csrf.token'].should == Rack::Csrf.csrf_token(@env)
+        env['rack.session'].should_not be_empty
+        env['rack.session']['csrf.token'].should == Rack::Csrf.csrf_token(env)
       end
     end
   end
 
   describe '#csrf_tag' do
-    before do
-      @env = {'rack.session' => {}}
+    let(:env) { {'rack.session' => {}} }
+
+    let :tag do
       fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
-      @tag = Rack::Csrf.csrf_tag(@env)
+      Rack::Csrf.csrf_tag env
     end
 
     it 'should be an input field' do
-      @tag.should =~ /^<input/
+      tag.should =~ /^<input/
     end
 
     it 'should be an hidden input field' do
-      @tag.should =~ /type="hidden"/
+      tag.should =~ /type="hidden"/
     end
 
     it "should have the csrf_field's name" do
-      @tag.should =~ /name="#{Rack::Csrf.csrf_field}"/
+      tag.should =~ /name="#{Rack::Csrf.csrf_field}"/
     end
 
     it "should have the csrf_token's output" do
-      quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.csrf_token(@env)}")
-      @tag.should =~ /#{quoted_value}/
+      quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.csrf_token(env)}")
+      tag.should =~ /#{quoted_value}/
     end
   end
 end
