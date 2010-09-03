@@ -1,5 +1,7 @@
 require 'camping'
 require 'camping/session'
+
+$: << File.join(File.dirname(__FILE__), '../../lib')
 require 'rack/csrf'
 
 Camping.goes :LittleApp
