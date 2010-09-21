@@ -1,6 +1,6 @@
 require 'rake/clean'
 require 'cucumber/rake/task'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 require 'rake/rdoctask'
 require 'jeweler'
 
@@ -11,9 +11,7 @@ end
 task :features => :check_dependencies
 task :default => :features
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = %w(-O spec/spec.opts)
-end
+RSpec::Core::RakeTask.new
 
 task :spec => :check_dependencies
 task :default => :spec
@@ -38,7 +36,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_dependency 'rack', '>= 0.9'
   gem.add_development_dependency 'cucumber', '>= 0.1.13'
   gem.add_development_dependency 'rack-test'
-  gem.add_development_dependency 'rspec', '>= 1.2.9'
+  gem.add_development_dependency 'rspec', '>= 2.0.0.beta.22'
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'
   gem.test_files.clear
