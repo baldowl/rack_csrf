@@ -27,3 +27,8 @@ Feature: Setup of the middleware
     Given a rack with the session middleware
     When I insert the anti-CSRF middleware with the :field option
     Then I get a fully functional rack
+
+  Scenario: Setup with the :key option
+    Given a rack with the session middleware
+    When I insert the anti-CSRF middleware with the :key option
+    Then I get a fully functional rack

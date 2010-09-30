@@ -55,6 +55,14 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: _csrf
 
+[<tt>:key</tt>]
+  The key used to store/retrieve the token from the Rack session; you can
+  adapt it to specific needs.
+
+    use Rack::Csrf, :key => 'my.own_session.key'
+
+  Default value: csrf.token
+
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
 introduced in Rack version 1.1.0 tightened the parsing of POST params, so
@@ -70,6 +78,10 @@ The ill devised <tt>:browser_only</tt> option could have been used to
 
 The following class methods try to ease the insertion of the anti-forging
 token.
+
+[<tt>Rack::Csrf.csrf_key</tt>]
+  Returns the name of the key used to store/retrieve the token from the Rack
+  session.
 
 [<tt>Rack::Csrf.csrf_field</tt>]
   Returns the name of the field that must be present in the request.

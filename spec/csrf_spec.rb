@@ -1,6 +1,18 @@
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 describe Rack::Csrf do
+  describe '#csrf_key' do
+    it "should be 'csrf.token' by default" do
+      Rack::Csrf.csrf_key.should == 'csrf.token'
+    end
+
+    it "should be the value of the :key option" do
+      fakeapp = lambda {|env| [200, {}, []]}
+      Rack::Csrf.new fakeapp, :key => 'whatever'
+      Rack::Csrf.csrf_key.should == 'whatever'
+    end
+  end
+
   describe '#csrf_field' do
     it "should be '_csrf' by default" do
       Rack::Csrf.csrf_field.should == '_csrf'
@@ -18,13 +30,27 @@ describe Rack::Csrf do
 
     specify {Rack::Csrf.csrf_token(env).should have_at_least(32).characters}
 
+    context 'when accessing/manipulating the session' do
+      before do
+        fakeapp = lambda {|env| [200, {}, []]}
+        Rack::Csrf.new fakeapp, :key => 'whatever'
+      end
+
+      it 'should use the key provided by csrf_key' do
+        env['rack.session'].should be_empty
+        Rack::Csrf.csrf_token env
+        env['rack.session'].should_not be_empty
+        env['rack.session'][Rack::Csrf.csrf_key].should_not be_nil
+      end
+    end
+
     context 'when the session does not already contain the token' do
       it 'should store the token inside the session' do
         env['rack.session'].should be_empty
         csrf_token = Rack::Csrf.csrf_token(env)
         env['rack.session'].should_not be_empty
-        env['rack.session']['csrf.token'].should_not be_empty
-        csrf_token.should == env['rack.session']['csrf.token']
+        env['rack.session'][Rack::Csrf.csrf_key].should_not be_nil
+        csrf_token.should == env['rack.session'][Rack::Csrf.csrf_key]
       end
     end
 
@@ -35,7 +61,7 @@ describe Rack::Csrf do
 
       it 'should get the token from the session' do
         env['rack.session'].should_not be_empty
-        env['rack.session']['csrf.token'].should == Rack::Csrf.csrf_token(env)
+        env['rack.session'][Rack::Csrf.csrf_key].should == Rack::Csrf.csrf_token(env)
       end
     end
   end

@@ -24,7 +24,7 @@ end
 
 When /^it receives a (POST|PUT|DELETE) request with the right CSRF token$/ do |http_method|
   @browser.request '/', :method => http_method,
-    'rack.session' => {'csrf.token' => 'right_token'},
+    'rack.session' => {Rack::Csrf.csrf_key => 'right_token'},
     :params => {Rack::Csrf.csrf_field => 'right_token'}
 end
 

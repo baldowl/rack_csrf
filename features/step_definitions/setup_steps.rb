@@ -27,6 +27,11 @@ Given /^a rack with the anti\-CSRF middleware and the :field option$/ do
   When 'I insert the anti-CSRF middleware with the :field option'
 end
 
+Given /^a rack with the anti\-CSRF middleware and the :key option$/ do
+  Given 'a rack with the session middleware'
+  When 'I insert the anti-CSRF middleware with the :key option'
+end
+
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
@@ -51,6 +56,12 @@ end
 
 When /^I insert the anti\-CSRF middleware with the :field option$/ do
   @rack_builder.use Rack::Csrf, :field => 'fantasy_name'
+  toy_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
+end
+
+When /^I insert the anti\-CSRF middleware with the :key option$/ do
+  @rack_builder.use Rack::Csrf, :key => 'fantasy_name'
   toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end

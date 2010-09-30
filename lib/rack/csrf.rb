@@ -11,6 +11,7 @@ module Rack
     class InvalidCsrfToken < StandardError; end
 
     @@field = '_csrf'
+    @@key = 'csrf.token'
 
     def initialize(app, opts = {})
       @app = app
@@ -18,6 +19,7 @@ module Rack
       @raisable = opts[:raise] || false
       @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
+      @@key = opts[:key] if opts[:key]
 
       @http_verbs = %w(POST PUT DELETE)
     end
@@ -29,7 +31,7 @@ module Rack
       self.class.csrf_token(env)
       req = Rack::Request.new(env)
       untouchable = !@http_verbs.include?(req.request_method) ||
-        req.POST[self.class.csrf_field] == env['rack.session']['csrf.token'] ||
+        req.POST[self.class.csrf_field] == env['rack.session'][self.class.csrf_key] ||
         skip_checking(req)
       if untouchable
         @app.call(env)
@@ -39,12 +41,16 @@ module Rack
       end
     end
 
+    def self.csrf_key
+      @@key
+    end
+
     def self.csrf_field
       @@field
     end
 
     def self.csrf_token(env)
-      env['rack.session']['csrf.token'] ||= SecureRandom.base64(32)
+      env['rack.session'][csrf_key] ||= SecureRandom.base64(32)
     end
 
     def self.csrf_tag(env)
