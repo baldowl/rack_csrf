@@ -1,3 +1,14 @@
+# v2.1.0 (2010-10-11)
+
+* Tiny improvements to Rakefile.
+* Added the :key option.
+* Moved to RSpec 2.
+* Tweaked Camping application's load path.
+* Camping example, courtesy of David Susco.
+* Summer spec cleanings.
+
+
+
 # v2.0.0 (2010-01-11)
 
 * Added a changelog and a Rake task to help.
