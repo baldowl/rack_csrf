@@ -4,15 +4,11 @@ require 'rspec/core/rake_task'
 require 'rake/rdoctask'
 require 'jeweler'
 
-Cucumber::Rake::Task.new :features do |c|
-  c.cucumber_opts = '--profile default'
-end
-
+Cucumber::Rake::Task.new :features
 task :features => :check_dependencies
 task :default => :features
 
-RSpec::Core::RakeTask.new
-
+RSpec::Core::RakeTask.new :spec
 task :spec => :check_dependencies
 task :default => :spec
 
@@ -36,7 +32,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_dependency 'rack', '>= 0.9'
   gem.add_development_dependency 'cucumber', '>= 0.1.13'
   gem.add_development_dependency 'rack-test'
-  gem.add_development_dependency 'rspec', '>= 2.0.0.beta.22'
+  gem.add_development_dependency 'rspec', '>= 2.0.0'
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'
   gem.test_files.clear
