@@ -12,7 +12,7 @@ Then /^the response body is empty$/ do
 end
 
 Then /^there is no response$/ do
-  lambda {@browser.last_response}.should raise_error(Rack::Test::Error)
+  expect {@browser.last_response}.to raise_exception(Rack::Test::Error)
 end
 
 Then /^an exception is climbing up the stack$/ do

@@ -67,11 +67,13 @@ When /^I insert the anti\-CSRF middleware with the :key option$/ do
 end
 
 Then /^I get a fully functional rack$/ do
-  lambda {Rack::MockRequest.new(@app).get('/')}.should_not raise_error
+  expect {Rack::MockRequest.new(@app).get('/')}.to_not raise_exception
 end
 
 Then /^I get an error message$/ do
-  lambda {Rack::MockRequest.new(@app).get('/')}.should raise_error(Rack::Csrf::SessionUnavailable, 'Rack::Csrf depends on session middleware')
+  expect {Rack::MockRequest.new(@app).get('/')}.to raise_exception(
+    Rack::Csrf::SessionUnavailable,
+    'Rack::Csrf depends on session middleware')
 end
 
 def toy_app
