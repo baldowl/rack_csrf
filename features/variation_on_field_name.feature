@@ -15,6 +15,7 @@ Feature: Customization of the field name
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the wrong CSRF token in custom field
     Given a rack with the anti-CSRF middleware and the :field option
@@ -27,3 +28,4 @@ Feature: Customization of the field name
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |

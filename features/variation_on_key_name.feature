@@ -15,6 +15,7 @@ Feature: Customization of the key name
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the wrong CSRF token stored in custom key
     Given a rack with the anti-CSRF middleware and the :key option
@@ -27,3 +28,4 @@ Feature: Customization of the key name
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |

@@ -21,7 +21,7 @@ module Rack
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
 
-      @http_verbs = %w(POST PUT DELETE)
+      @http_verbs = %w(POST PUT DELETE PATCH)
     end
 
     def call(env)

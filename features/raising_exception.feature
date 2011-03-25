@@ -16,6 +16,7 @@ Feature: Handling of the HTTP requests raising an exception
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the right CSRF token
     Given a rack with the anti-CSRF middleware and the :raise option
@@ -27,6 +28,7 @@ Feature: Handling of the HTTP requests raising an exception
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the wrong CSRF token
     Given a rack with the anti-CSRF middleware and the :raise option
@@ -39,3 +41,4 @@ Feature: Handling of the HTTP requests raising an exception
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |

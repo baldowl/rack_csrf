@@ -21,6 +21,7 @@ Feature: Handling of the HTTP requests returning an empty response
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the right CSRF token
     Given a rack with the anti-CSRF middleware
@@ -32,6 +33,7 @@ Feature: Handling of the HTTP requests returning an empty response
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
 
   Scenario Outline: Handling request with the wrong CSRF token
     Given a rack with the anti-CSRF middleware
@@ -44,3 +46,4 @@ Feature: Handling of the HTTP requests returning an empty response
       | POST   |
       | PUT    |
       | DELETE |
+      | PATCH  |
