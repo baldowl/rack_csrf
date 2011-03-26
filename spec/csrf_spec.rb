@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 describe Rack::Csrf do
-  describe '#csrf_key' do
+  describe 'csrf_key' do
     it "should be 'csrf.token' by default" do
       Rack::Csrf.csrf_key.should == 'csrf.token'
     end
@@ -13,7 +13,7 @@ describe Rack::Csrf do
     end
   end
 
-  describe '#csrf_field' do
+  describe 'csrf_field' do
     it "should be '_csrf' by default" do
       Rack::Csrf.csrf_field.should == '_csrf'
     end
@@ -25,7 +25,7 @@ describe Rack::Csrf do
     end
   end
 
-  describe '#csrf_token' do
+  describe 'csrf_token(env)' do
     let(:env) { {'rack.session' => {}} }
 
     specify {Rack::Csrf.csrf_token(env).should have_at_least(32).characters}
@@ -66,7 +66,7 @@ describe Rack::Csrf do
     end
   end
 
-  describe '#csrf_tag' do
+  describe 'csrf_tag(env)' do
     let(:env) { {'rack.session' => {}} }
 
     let :tag do
