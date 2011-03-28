@@ -57,6 +57,13 @@ module Rack
       %Q(<input type="hidden" name="#{csrf_field}" value="#{csrf_token(env)}" />)
     end
 
+    class << self
+      alias_method :key, :csrf_key
+      alias_method :field, :csrf_field
+      alias_method :token, :csrf_token
+      alias_method :tag, :csrf_tag
+    end
+
     protected
 
     def skip_checking request

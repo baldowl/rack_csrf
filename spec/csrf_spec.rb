@@ -13,6 +13,12 @@ describe Rack::Csrf do
     end
   end
 
+  describe 'key' do
+    it 'should be the same as csrf_key' do
+      Rack::Csrf.method(:key).should == Rack::Csrf.method(:csrf_key)
+    end
+  end
+
   describe 'csrf_field' do
     it "should be '_csrf' by default" do
       Rack::Csrf.csrf_field.should == '_csrf'
@@ -22,6 +28,12 @@ describe Rack::Csrf do
       fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
       Rack::Csrf.csrf_field.should == 'whatever'
+    end
+  end
+
+  describe 'field' do
+    it 'should be the same as csrf_field' do
+      Rack::Csrf.method(:field).should == Rack::Csrf.method(:csrf_field)
     end
   end
 
@@ -66,6 +78,12 @@ describe Rack::Csrf do
     end
   end
 
+  describe 'token(env)' do
+    it 'should be the same as csrf_token(env)' do
+      Rack::Csrf.method(:token).should == Rack::Csrf.method(:csrf_token)
+    end
+  end
+
   describe 'csrf_tag(env)' do
     let(:env) { {'rack.session' => {}} }
 
@@ -90,6 +108,12 @@ describe Rack::Csrf do
     it "should have the csrf_token's output" do
       quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.csrf_token(env)}")
       tag.should =~ /#{quoted_value}/
+    end
+  end
+
+  describe 'tag(env)' do
+    it 'should be the same as csrf_tag(env)' do
+      Rack::Csrf.method(:tag).should == Rack::Csrf.method(:csrf_tag)
     end
   end
 end
