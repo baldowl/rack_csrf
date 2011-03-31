@@ -1,13 +1,13 @@
 = How to use Rack::Csrf with Innate
 
 These are two mini, slightly different, Innate applications. You only need
-Innate to try them.
+Innate to try them, so, assuming you have Bundler installed, run:
 
-    $ sudo gem install manveru-innate --source http://gems.github.com
-    $ ruby start.rb
-    $ ruby start-with-raise.rb
+    $ bundle install
+    $ bundle exec ruby start.rb
+    $ bundle exec ruby start-with-raise.rb
 
-Tested with Innate 2009.07.
+Tested with Innate versions listed in the Gemfile.
 
 Please, note that Innate is, to some extent, the kernel of Ramaze; "upgrading"
 these examples to use Ramaze is left as an exercise to the reader :-)

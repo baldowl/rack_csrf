@@ -1,10 +1,10 @@
 = How to use Rack::Csrf with Camping
 
 This Camping application has been provided by David Susco. All you need is
-Camping itself and Markaby.
+Camping itself and Markaby, so, assuming you have Bundler installed, run:
 
-    $ sudo gem install camping markaby
-    $ camping -p 3000 app.rb
+    $ bundle install
+    $ bundle exec camping -p 3000 app.rb
 
 The <tt>config.ru</tt> can be used to run the application with any
 Rack-compliant web server.
@@ -13,4 +13,4 @@ Please, note the way Rack::Csrf has been inserted into the stack and the
 position relative to Camping::Session (see Camping's internals for the
 reason).
 
-Tested with Camping 2.1 and Markaby 0.7.1.
+Tested with Camping and Markaby versions listed in the Gemfile.

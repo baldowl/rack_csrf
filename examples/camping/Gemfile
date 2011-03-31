@@ -1,0 +1,4 @@
+source 'http://rubygems.org'
+
+gem 'camping', '2.1'
+gem 'markaby', '0.7.1'

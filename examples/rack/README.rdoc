@@ -1,10 +1,10 @@
 = How to use Rack::Csrf with Rack
 
 This is a mini Rack application with two slightly different rackup files. You
-only need Rack to try them.
+only need Rack to try them, so, assuming you have Bundler installed, run:
 
-    $ sudo gem install rack
-    $ thin -R config.ru -p 3000 start
-    $ thin -R config-with-raise.ru -p 3000 start
+    $ bundle install
+    $ bundle exec rackup -p 3000 config.ru
+    $ bundle exec rackup -p 3000 config-with-raise.ru
 
-Tested with Rack 1.0.0.
+Tested with Rack versions listed in the Gemfile.
