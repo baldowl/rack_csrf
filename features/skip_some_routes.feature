@@ -55,3 +55,20 @@ Feature: Skipping the check for some specific routes
       | POST   | /this/one/too                   |
       | PUT    | /this/one/too                   |
       | DELETE | /this/one/too                   |
+
+  Scenario Outline: Handling correctly empty PATH_INFO
+    Given a rack with the anti-CSRF middleware and the :skip option
+      | pair     |
+      | POST:/   |
+      | PUT:/    |
+      | DELETE:/ |
+      | PATCH:/  |
+    When it receives a <method> request with neither PATH_INFO nor CSRF token
+    Then it lets it pass untouched
+
+    Examples:
+      | method |
+      | POST   |
+      | PUT    |
+      | DELETE |
+      | PATCH  |

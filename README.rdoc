@@ -43,7 +43,8 @@ The following options allow you to tweak Rack::Csrf.
       'DELETE:/cars/.*\.xml', 'PATCH:/this/.*/too']
 
   Please, note that the regular expressions are not escaped and it is your
-  duty to write them correctly.
+  duty to write them correctly. Empty PATH_INFO (see Rack's spec for details)
+  is treated as '/' for this check.
 
   Default value: empty.
 

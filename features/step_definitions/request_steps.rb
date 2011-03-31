@@ -36,3 +36,11 @@ When /^it receives a (POST|PUT|DELETE|PATCH) request with the wrong CSRF token$/
     @exception = e
   end
 end
+
+When /^it receives a (POST|PUT|DELETE|PATCH) request with neither PATH_INFO nor CSRF token$/ do |http_method|
+  begin
+    @browser.request '/doesntmatter', :method => http_method, 'PATH_INFO' => ''
+  rescue Exception => e
+    @exception = e
+  end
+end

@@ -67,8 +67,9 @@ module Rack
     protected
 
     def skip_checking request
+      pi = request.path_info.empty? ? '/' : request.path_info
       @skippable.any? do |route|
-        route =~ (request.request_method + ':' + request.path_info)
+        route =~ (request.request_method + ':' + pi)
       end
     end
   end
