@@ -1,3 +1,16 @@
+# v2.2.0 (2011-04-12)
+
+* Simplified specs and some Cucumber's steps.
+* Added handling of empty PATH_INFO.
+* Added Gemfiles to the examples. Tweaked the READMEs.
+* Extended API: added shorter aliases for the public methods.
+* Tweaked example groups' names.
+* Added support for PATCH verb.
+* Added license metadata to gemspec via Jeweler's task.
+* Replace lambdas with expect()... RSpec's white magic!
+
+
+
 # v2.1.0 (2010-10-11)
 
 * Tiny improvements to Rakefile.
