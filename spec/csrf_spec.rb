@@ -51,7 +51,6 @@ describe Rack::Csrf do
       it 'should use the key provided by csrf_key' do
         env['rack.session'].should be_empty
         Rack::Csrf.csrf_token env
-        env['rack.session'].should_not be_empty
         env['rack.session'][Rack::Csrf.csrf_key].should_not be_nil
       end
     end
@@ -60,8 +59,6 @@ describe Rack::Csrf do
       it 'should store the token inside the session' do
         env['rack.session'].should be_empty
         csrf_token = Rack::Csrf.csrf_token(env)
-        env['rack.session'].should_not be_empty
-        env['rack.session'][Rack::Csrf.csrf_key].should_not be_nil
         csrf_token.should == env['rack.session'][Rack::Csrf.csrf_key]
       end
     end
@@ -72,7 +69,6 @@ describe Rack::Csrf do
       end
 
       it 'should get the token from the session' do
-        env['rack.session'].should_not be_empty
         env['rack.session'][Rack::Csrf.csrf_key].should == Rack::Csrf.csrf_token(env)
       end
     end

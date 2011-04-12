@@ -37,32 +37,32 @@ end
 
 When /^I insert the anti\-CSRF middleware$/ do
   @rack_builder.use Rack::Csrf
-  toy_app
+  @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :raise option$/ do
   @rack_builder.use Rack::Csrf, :raise => true
-  toy_app
+  @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
   skippable = table.hashes.collect {|t| t.values}.flatten
   @rack_builder.use Rack::Csrf, :skip => skippable
-  toy_app
+  @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :field option$/ do
   @rack_builder.use Rack::Csrf, :field => 'fantasy_name'
-  toy_app
+  @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :key option$/ do
   @rack_builder.use Rack::Csrf, :key => 'fantasy_name'
-  toy_app
+  @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
@@ -78,5 +78,5 @@ end
 
 def toy_app
   @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
-  @app = @rack_builder.to_app
+  @rack_builder.to_app
 end

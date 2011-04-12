@@ -16,6 +16,5 @@ Then /^there is no response$/ do
 end
 
 Then /^an exception is climbing up the stack$/ do
-  @exception.should_not be_nil
   @exception.should be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end
