@@ -37,7 +37,7 @@ module LittleApp
       form :action => URL(Response), :method => :post do
         h1 'Spit your utterance!'
         input :name => :utterance, :type => :text
-        text Rack::Csrf.csrf_tag(@env)
+        text Rack::Csrf.tag(@env)
         p {
           input :type => :submit, :value => :Send!
         }

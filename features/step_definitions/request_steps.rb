@@ -1,5 +1,5 @@
 When /^it receives a GET request (with|without) the CSRF token$/ do |prep|
-  params = prep == 'with' ? {Rack::Csrf.csrf_field => 'whatever'} : {}
+  params = prep == 'with' ? {Rack::Csrf.field => 'whatever'} : {}
   @browser.get '/', :params => params
 end
 
@@ -24,14 +24,14 @@ end
 
 When /^it receives a (POST|PUT|DELETE|PATCH) request with the right CSRF token$/ do |http_method|
   @browser.request '/', :method => http_method,
-    'rack.session' => {Rack::Csrf.csrf_key => 'right_token'},
-    :params => {Rack::Csrf.csrf_field => 'right_token'}
+    'rack.session' => {Rack::Csrf.key => 'right_token'},
+    :params => {Rack::Csrf.field => 'right_token'}
 end
 
 When /^it receives a (POST|PUT|DELETE|PATCH) request with the wrong CSRF token$/ do |http_method|
   begin
     @browser.request '/', :method => http_method,
-      :params => {Rack::Csrf.csrf_field => 'whatever'}
+      :params => {Rack::Csrf.field => 'whatever'}
   rescue Exception => e
     @exception = e
   end

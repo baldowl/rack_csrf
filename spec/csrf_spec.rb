@@ -1,46 +1,46 @@
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 describe Rack::Csrf do
-  describe 'csrf_key' do
+  describe 'key' do
     it "should be 'csrf.token' by default" do
-      Rack::Csrf.csrf_key.should == 'csrf.token'
+      Rack::Csrf.key.should == 'csrf.token'
     end
 
     it "should be the value of the :key option" do
       fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :key => 'whatever'
-      Rack::Csrf.csrf_key.should == 'whatever'
+      Rack::Csrf.key.should == 'whatever'
     end
   end
 
-  describe 'key' do
-    it 'should be the same as csrf_key' do
-      Rack::Csrf.method(:key).should == Rack::Csrf.method(:csrf_key)
+  describe 'csrf_key' do
+    it 'should be the same as method key' do
+      Rack::Csrf.method(:csrf_key).should == Rack::Csrf.method(:key)
     end
   end
 
-  describe 'csrf_field' do
+  describe 'field' do
     it "should be '_csrf' by default" do
-      Rack::Csrf.csrf_field.should == '_csrf'
+      Rack::Csrf.field.should == '_csrf'
     end
 
     it "should be the value of :field option" do
       fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
-      Rack::Csrf.csrf_field.should == 'whatever'
+      Rack::Csrf.field.should == 'whatever'
     end
   end
 
-  describe 'field' do
-    it 'should be the same as csrf_field' do
-      Rack::Csrf.method(:field).should == Rack::Csrf.method(:csrf_field)
+  describe 'csrf_field' do
+    it 'should be the same as method field' do
+      Rack::Csrf.method(:csrf_field).should == Rack::Csrf.method(:field)
     end
   end
 
-  describe 'csrf_token(env)' do
+  describe 'token(env)' do
     let(:env) { {'rack.session' => {}} }
 
-    specify {Rack::Csrf.csrf_token(env).should have_at_least(32).characters}
+    specify {Rack::Csrf.token(env).should have_at_least(32).characters}
 
     context 'when accessing/manipulating the session' do
       before do
@@ -48,45 +48,45 @@ describe Rack::Csrf do
         Rack::Csrf.new fakeapp, :key => 'whatever'
       end
 
-      it 'should use the key provided by csrf_key' do
+      it 'should use the key provided by method key' do
         env['rack.session'].should be_empty
-        Rack::Csrf.csrf_token env
-        env['rack.session'][Rack::Csrf.csrf_key].should_not be_nil
+        Rack::Csrf.token env
+        env['rack.session'][Rack::Csrf.key].should_not be_nil
       end
     end
 
     context 'when the session does not already contain the token' do
       it 'should store the token inside the session' do
         env['rack.session'].should be_empty
-        csrf_token = Rack::Csrf.csrf_token(env)
-        csrf_token.should == env['rack.session'][Rack::Csrf.csrf_key]
+        token = Rack::Csrf.token(env)
+        token.should == env['rack.session'][Rack::Csrf.key]
       end
     end
 
     context 'when the session already contains the token' do
       before do
-        Rack::Csrf.csrf_token env
+        Rack::Csrf.token env
       end
 
       it 'should get the token from the session' do
-        env['rack.session'][Rack::Csrf.csrf_key].should == Rack::Csrf.csrf_token(env)
+        env['rack.session'][Rack::Csrf.key].should == Rack::Csrf.token(env)
       end
     end
   end
 
-  describe 'token(env)' do
-    it 'should be the same as csrf_token(env)' do
-      Rack::Csrf.method(:token).should == Rack::Csrf.method(:csrf_token)
+  describe 'csrf_token(env)' do
+    it 'should be the same as method token(env)' do
+      Rack::Csrf.method(:csrf_token).should == Rack::Csrf.method(:token)
     end
   end
 
-  describe 'csrf_tag(env)' do
+  describe 'tag(env)' do
     let(:env) { {'rack.session' => {}} }
 
     let :tag do
       fakeapp = lambda {|env| [200, {}, []]}
       Rack::Csrf.new fakeapp, :field => 'whatever'
-      Rack::Csrf.csrf_tag env
+      Rack::Csrf.tag env
     end
 
     it 'should be an input field' do
@@ -97,19 +97,19 @@ describe Rack::Csrf do
       tag.should =~ /type="hidden"/
     end
 
-    it "should have the csrf_field's name" do
-      tag.should =~ /name="#{Rack::Csrf.csrf_field}"/
+    it "should have the name provided by method field" do
+      tag.should =~ /name="#{Rack::Csrf.field}"/
     end
 
-    it "should have the csrf_token's output" do
-      quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.csrf_token(env)}")
+    it "should have the value provided by method token(env)" do
+      quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.token(env)}")
       tag.should =~ /#{quoted_value}/
     end
   end
 
-  describe 'tag(env)' do
-    it 'should be the same as csrf_tag(env)' do
-      Rack::Csrf.method(:tag).should == Rack::Csrf.method(:csrf_tag)
+  describe 'csrf_tag(env)' do
+    it 'should be the same as method tag(env)' do
+      Rack::Csrf.method(:csrf_tag).should == Rack::Csrf.method(:tag)
     end
   end
 end

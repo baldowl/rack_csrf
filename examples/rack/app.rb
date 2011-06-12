@@ -3,7 +3,7 @@ class LittleApp
     <form action="/response" method="post">
       <h1>Spit your utterance!</h1>
       <input type="text" name="utterance">
-      <%= Rack::Csrf.csrf_tag(env) %>
+      <%= Rack::Csrf.tag(env) %>
       <p><input type="submit" value="Send!"></p>
     </form>
 
@@ -38,7 +38,7 @@ class LittleApp
       end
     elsif req.post?
       utterance = req['utterance']
-      csrf = req[Rack::Csrf.csrf_field]
+      csrf = req[Rack::Csrf.field]
       Rack::Response.new(@response.result(binding)).finish
     end
   end

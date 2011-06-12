@@ -28,10 +28,10 @@ module Rack
       unless env['rack.session']
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
-      self.class.csrf_token(env)
+      self.class.token(env)
       req = Rack::Request.new(env)
       untouchable = !@http_verbs.include?(req.request_method) ||
-        req.POST[self.class.csrf_field] == env['rack.session'][self.class.csrf_key] ||
+        req.POST[self.class.field] == env['rack.session'][self.class.key] ||
         skip_checking(req)
       if untouchable
         @app.call(env)
@@ -41,27 +41,27 @@ module Rack
       end
     end
 
-    def self.csrf_key
+    def self.key
       @@key
     end
 
-    def self.csrf_field
+    def self.field
       @@field
     end
 
-    def self.csrf_token(env)
-      env['rack.session'][csrf_key] ||= SecureRandom.base64(32)
+    def self.token(env)
+      env['rack.session'][key] ||= SecureRandom.base64(32)
     end
 
-    def self.csrf_tag(env)
-      %Q(<input type="hidden" name="#{csrf_field}" value="#{csrf_token(env)}" />)
+    def self.tag(env)
+      %Q(<input type="hidden" name="#{field}" value="#{token(env)}" />)
     end
 
     class << self
-      alias_method :key, :csrf_key
-      alias_method :field, :csrf_field
-      alias_method :token, :csrf_token
-      alias_method :tag, :csrf_tag
+      alias_method :csrf_key, :key
+      alias_method :csrf_field, :field
+      alias_method :csrf_token, :token
+      alias_method :csrf_tag, :tag
     end
 
     protected

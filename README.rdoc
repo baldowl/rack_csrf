@@ -80,19 +80,19 @@ The ill devised <tt>:browser_only</tt> option could have been used to
 The following class methods try to ease the insertion of the anti-forging
 token.
 
-[<tt>Rack::Csrf.csrf_key</tt> (also <tt>Rack::Csrf.key</tt>)]
+[<tt>Rack::Csrf.key</tt> (also <tt>Rack::Csrf.csrf_key</tt>)]
   Returns the name of the key used to store/retrieve the token from the Rack
   session.
 
-[<tt>Rack::Csrf.csrf_field</tt> (also <tt>Rack::Csrf.field</tt>)]
+[<tt>Rack::Csrf.field</tt> (also <tt>Rack::Csrf.csrf_field</tt>)]
   Returns the name of the field that must be present in the request.
 
-[<tt>Rack::Csrf.csrf_token(env)</tt> (also <tt>Rack::Csrf.token(env)</tt>)]
+[<tt>Rack::Csrf.token(env)</tt> (also <tt>Rack::Csrf.csrf_token(env)</tt>)]
   Given the request's environment, it generates a random token, stuffs it in
   the session and returns it to the caller or simply retrieves the already
   stored one.
 
-[<tt>Rack::Csrf.csrf_tag(env)</tt> (also <tt>Rack::Csrf.tag(env)</tt>)]
+[<tt>Rack::Csrf.tag(env)</tt> (also <tt>Rack::Csrf.csrf_tag(env)</tt>)]
   Given the request's environment, it generates a small HTML fragment to
   insert the token in a standard form like an hidden input field with the
   right value already entered for you.
