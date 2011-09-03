@@ -33,7 +33,7 @@ module Rack
       self.class.token(env)
       req = Rack::Request.new(env)
       untouchable = !@http_methods.include?(req.request_method) ||
-        req.POST[self.class.field] == env['rack.session'][self.class.key] ||
+        req.params[self.class.field] == env['rack.session'][self.class.key] ||
         skip_checking(req)
       if untouchable
         @app.call(env)
