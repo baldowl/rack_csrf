@@ -1,12 +1,13 @@
 Feature: Handling of the HTTP requests raising an exception
 
-  Scenario: GET request without CSRF token
+  Background:
     Given a rack with the anti-CSRF middleware and the :raise option
+
+  Scenario: GET request without CSRF token
     When it receives a GET request without the CSRF token
     Then it lets it pass untouched
 
   Scenario Outline: Handling request without CSRF token
-    Given a rack with the anti-CSRF middleware and the :raise option
     When it receives a <method> request without the CSRF token
     Then there is no response
     And an exception is climbing up the stack
@@ -19,7 +20,6 @@ Feature: Handling of the HTTP requests raising an exception
       | PATCH  |
 
   Scenario Outline: Handling request with the right CSRF token
-    Given a rack with the anti-CSRF middleware and the :raise option
     When it receives a <method> request with the right CSRF token
     Then it lets it pass untouched
 
@@ -31,7 +31,6 @@ Feature: Handling of the HTTP requests raising an exception
       | PATCH  |
 
   Scenario Outline: Handling request with the wrong CSRF token
-    Given a rack with the anti-CSRF middleware and the :raise option
     When it receives a <method> request with the wrong CSRF token
     Then there is no response
     And an exception is climbing up the stack
