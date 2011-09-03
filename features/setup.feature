@@ -32,3 +32,11 @@ Feature: Setup of the middleware
     Given a rack with the session middleware
     When I insert the anti-CSRF middleware with the :key option
     Then I get a fully functional rack
+
+  Scenario: Setup with the :check_also option
+    Given a rack with the session middleware
+    When I insert the anti-CSRF middleware with the :check_also option
+      | method |
+      | ME     |
+      | YOU    |
+    Then I get a fully functional rack

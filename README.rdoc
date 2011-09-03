@@ -64,6 +64,15 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: csrf.token
 
+[<tt>:check_also</tth>]
+  By passing an array of uppercase strings to this option you can add them to
+  the list of HTTP methods which "mark" requests that must be searched for the
+  anti-forging token.
+
+    use Rack::Csrf, :check_also => %w(WHATEVER YOU WANT EVEN GET)
+
+  Default value: empty
+
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
 introduced in Rack version 1.1.0 tightened the parsing of POST params, so

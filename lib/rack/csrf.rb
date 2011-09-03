@@ -21,7 +21,9 @@ module Rack
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
 
-      @http_verbs = %w(POST PUT DELETE PATCH)
+      standard_http_methods = %w(POST PUT DELETE PATCH)
+      check_also = opts[:check_also] || []
+      @http_methods = (standard_http_methods + check_also).flatten.uniq
     end
 
     def call(env)
@@ -30,7 +32,7 @@ module Rack
       end
       self.class.token(env)
       req = Rack::Request.new(env)
-      untouchable = !@http_verbs.include?(req.request_method) ||
+      untouchable = !@http_methods.include?(req.request_method) ||
         req.POST[self.class.field] == env['rack.session'][self.class.key] ||
         skip_checking(req)
       if untouchable
