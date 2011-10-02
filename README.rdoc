@@ -116,7 +116,7 @@ framework; see the various README files for other details.
 
 If you want to help:
 
-* fork the project[http://github.com/baldowl/rack_csrf] on GitHub;
+* fork the project[https://github.com/baldowl/rack_csrf] on GitHub;
 * work in a topic branch;
 * add features/specs for your additions or bug fixes;
 * write your additions/bug fixes;
@@ -124,7 +124,7 @@ If you want to help:
 * send me a pull request for the topic branch.
 
 If you have any issue, please post them on the {project's issue
-list}[http://github.com/baldowl/rack_csrf] on GitHub.
+list}[https://github.com/baldowl/rack_csrf] on GitHub.
 
 == Warning! Warning! Warning!
 

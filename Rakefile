@@ -28,7 +28,7 @@ Jeweler::Tasks.new do |gem|
   gem.license = 'MIT'
   gem.authors = 'Emanuele Vicentini'
   gem.email = 'emanuele.vicentini@gmail.com'
-  gem.homepage = 'http://github.com/baldowl/rack_csrf'
+  gem.homepage = 'https://github.com/baldowl/rack_csrf'
   gem.rubyforge_project = 'rackcsrf'
   gem.add_dependency 'rack', '>= 0.9'
   gem.add_development_dependency 'cucumber', '>= 0.1.13'
