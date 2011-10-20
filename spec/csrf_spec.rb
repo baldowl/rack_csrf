@@ -132,7 +132,7 @@ describe Rack::Csrf do
         it "should skip check when path_info is /hello" do
             @csrf.send(:skip_checking, @request).should be_true
         end
-        
+
         it "should run the check when path_info is /byebye" do
             @request.path_info = '/byebye'
             @csrf.send(:skip_checking, @request).should be_false
