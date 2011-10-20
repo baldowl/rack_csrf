@@ -17,6 +17,7 @@ module Rack
       @app = app
 
       @raisable = opts[:raise] || false
+      @allowable = (opts[:allow] || []).map {|r| /\A#{r}\Z/i}
       @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
@@ -69,8 +70,14 @@ module Rack
     protected
 
     def skip_checking request
+      skip = any? @skippable, request
+      allow = any? @allowable, request
+      skip or (not @allowable.empty? and not allow)
+    end
+    
+    def any? list, request
       pi = request.path_info.empty? ? '/' : request.path_info
-      @skippable.any? do |route|
+      list.any? do |route|
         route =~ (request.request_method + ':' + pi)
       end
     end
