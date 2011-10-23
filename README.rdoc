@@ -78,7 +78,7 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: csrf.token
 
-[<tt>:check_also</tth>]
+[<tt>:check_also</tt>]
   By passing an array of uppercase strings to this option you can add them to
   the list of HTTP methods which "mark" requests that must be searched for the
   anti-forging token.
