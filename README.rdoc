@@ -34,12 +34,12 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: false.
 
-[<tt>:allow</tt>]
+[<tt>:check_only</tt>]
   By default, Rack::Csrf checks every POST, PUT, DELETE and PATCH request;
   passing an array of HTTP method/URL (regular expressions allowed) to this
-  option you can change this behavior to only check the items on this list.
+  option you can change this behavior to *only* check the items on this list.
 
-    use Rack::Csrf, :allow => ['POST:/checking', 'PUT:/me_too',
+    use Rack::Csrf, :check_only => ['POST:/checking', 'PUT:/me_too',
       'DELETE:/cars/.*\.xml', 'PATCH:/this/.*/too']
 
   Please, note that the regular expressions are not escaped and it is your

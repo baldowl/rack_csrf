@@ -17,8 +17,8 @@ module Rack
       @app = app
 
       @raisable = opts[:raise] || false
-      @allowable = (opts[:allow] || []).map {|r| /\A#{r}\Z/i}
-      @skippable = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @to_be_skipped = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @to_be_checked = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
 
@@ -33,9 +33,9 @@ module Rack
       end
       self.class.token(env)
       req = Rack::Request.new(env)
-      untouchable = !@http_methods.include?(req.request_method) ||
-        req.params[self.class.field] == env['rack.session'][self.class.key] ||
-        skip_checking(req)
+      untouchable = skip_checking(req) ||
+        !@http_methods.include?(req.request_method) ||
+        req.params[self.class.field] == env['rack.session'][self.class.key]
       if untouchable
         @app.call(env)
       else
@@ -70,9 +70,9 @@ module Rack
     protected
 
     def skip_checking request
-      skip = any? @skippable, request
-      allow = any? @allowable, request
-      skip or (not @allowable.empty? and not allow)
+      skip = any? @to_be_skipped, request
+      allow = any? @to_be_checked, request
+      skip || (!@to_be_checked.empty? && !allow)
     end
     
     def any? list, request

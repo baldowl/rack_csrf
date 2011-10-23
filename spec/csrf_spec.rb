@@ -112,90 +112,81 @@ describe Rack::Csrf do
       Rack::Csrf.method(:csrf_tag).should == Rack::Csrf.method(:tag)
     end
   end
-  
+
   describe 'skip_checking' do
     class MockReq
-        attr_accessor :path_info, :request_method
+      attr_accessor :path_info, :request_method
     end
-    
+
     before :each do
       @request = MockReq.new
       @request.path_info = '/hello'
-      @request.request_method = 'GET'
+      @request.request_method = 'POST'
     end
 
-    context "with route '/hello' on skip list" do
-        before :each do
-          @csrf = Rack::Csrf.new nil, :skip => ['GET:/hello']
-        end
+    context 'with empty :skip and :check_only lists' do
+      let(:csrf) { Rack::Csrf.new nil }
 
-        it "should skip check when path_info is /hello" do
-            @csrf.send(:skip_checking, @request).should be_true
-        end
-
-        it "should run the check when path_info is /byebye" do
-            @request.path_info = '/byebye'
-            @csrf.send(:skip_checking, @request).should be_false
-        end
+      it 'should run the check, irrespective of the request' do
+        csrf.send(:skip_checking, @request).should be_false
+      end
     end
 
-    context "with route '/hello' on allow list" do
-        before :each do
-          @csrf = Rack::Csrf.new nil, :allow => ['GET:/hello']
-        end
+    context 'with routes in the :skip list and nothing in the :check_only list' do
+      let(:csrf) { Rack::Csrf.new nil, :skip => ['POST:/hello'] }
 
-        it "should run the check when path_info is /hello" do
-            @csrf.send(:skip_checking, @request).should be_false
-        end
+      it 'should skip the check when the request is included in the :skip list' do
+        csrf.send(:skip_checking, @request).should be_true
+      end
 
-        it "should skip check when path_info is /byebye" do
-            @request.path_info = '/byebye'
-            @csrf.send(:skip_checking, @request).should be_true
-        end
+      it 'should run the check when the request is not in the :skip list' do
+        @request.path_info = '/byebye'
+        csrf.send(:skip_checking, @request).should be_false
+      end
     end
 
-    context "with skip and allow list empty" do
-        before :each do
-          @csrf = Rack::Csrf.new nil
-        end
+    context 'with routes in the :check_only list and nothing in the :skip list' do
+      let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
 
-        it "should run the check when path_info is /hello" do
-            @csrf.send(:skip_checking, @request).should be_false
-        end
+      it 'should run the check when the request is included in the :check_only list' do
+        csrf.send(:skip_checking, @request).should be_false
+      end
 
-        it "should run the check when path_info is /byebye" do
-            @request.path_info = '/byebye'
-            @csrf.send(:skip_checking, @request).should be_false
-        end
+      it 'should skip the check when the request is not in the :check_only list' do
+        @request.path_info = '/byebye'
+        csrf.send(:skip_checking, @request).should be_true
+      end
     end
-    
-    context "with values on skip and allow list" do
-        before :each do
-          @csrf = Rack::Csrf.new nil, 
-              :skip => ['GET:/hello'], 
-              :allow => ['GET:/byebye']
-        end
-        
-        it "should skip the check when path_info is /hello" do
-            @csrf.send(:skip_checking, @request).should be_true
-        end
 
-        it "should run the check when path_info is /byebye" do
-            @request.path_info = '/byebye'
-            @csrf.send(:skip_checking, @request).should be_false
-        end
+    context 'with different routes in the :skip and :check_only lists' do
+      let :csrf do
+        Rack::Csrf.new nil,
+          :skip => ['POST:/hello'],
+          :check_only => ['POST:/byebye']
+      end
+
+      it 'should skip the check when the request is included in the :skip list' do
+        csrf.send(:skip_checking, @request).should be_true
+      end
+
+      it 'should run the check when the request is included in the :check_only list' do
+        @request.path_info = '/byebye'
+        csrf.send(:skip_checking, @request).should be_false
+      end
     end
-    
-    context "when values in allow and skip list are the same" do
-        before :each do
-          @csrf = Rack::Csrf.new nil, 
-              :skip => ['GET:/hello'], 
-              :allow => ['GET:/hello']
+
+    context 'with the same routes in the :check_only and :skip lists' do
+      let :csrf do
+        Rack::Csrf.new nil,
+          :skip => ['POST:/hello'],
+          :check_only => ['POST:/hello']
+      end
+
+      context 'when the request is included in one of the list' do
+        it 'should ignore the :check_only list and skip the check' do
+          csrf.send(:skip_checking, @request).should be_true
         end
-        
-        it "should ignore the allow list and skip the check" do
-            @csrf.send(:skip_checking, @request).should be_true
-        end
+      end
     end
   end
 end
