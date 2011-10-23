@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{rack_csrf}
-  s.version = "2.2.0"
+  s.name = "rack_csrf"
+  s.version = "2.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emanuele Vicentini"]
-  s.date = %q{2011-04-12}
-  s.description = %q{Anti-CSRF Rack middleware}
-  s.email = %q{emanuele.vicentini@gmail.com}
+  s.date = "2011-10-23"
+  s.description = "Anti-CSRF Rack middleware"
+  s.email = "emanuele.vicentini@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.rdoc",
     "README.rdoc"
@@ -28,6 +28,14 @@ Gem::Specification.new do |s|
     "examples/camping/README.rdoc",
     "examples/camping/app.rb",
     "examples/camping/config.ru",
+    "examples/cuba/Gemfile",
+    "examples/cuba/README.rdoc",
+    "examples/cuba/app.rb",
+    "examples/cuba/config-with-raise.ru",
+    "examples/cuba/config.ru",
+    "examples/cuba/views/form.erb",
+    "examples/cuba/views/form_not_working.erb",
+    "examples/cuba/views/response.erb",
     "examples/innate/Gemfile",
     "examples/innate/README.rdoc",
     "examples/innate/app.rb",
@@ -49,7 +57,10 @@ Gem::Specification.new do |s|
     "examples/sinatra/views/form.erb",
     "examples/sinatra/views/form_not_working.erb",
     "examples/sinatra/views/response.erb",
+    "features/check_only_some_specific_requests.feature",
+    "features/custom_http_methods.feature",
     "features/empty_responses.feature",
+    "features/inspecting_also_get_requests.feature",
     "features/raising_exception.feature",
     "features/setup.feature",
     "features/skip_some_routes.feature",
@@ -66,13 +77,13 @@ Gem::Specification.new do |s|
     "spec/csrf_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/baldowl/rack_csrf}
+  s.homepage = "https://github.com/baldowl/rack_csrf"
   s.licenses = ["MIT"]
-  s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Rack::Csrf 2.2.0", "--main", "README.rdoc"]
+  s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Rack::Csrf 2.3.0", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{rackcsrf}
-  s.rubygems_version = %q{1.7.2}
-  s.summary = %q{Anti-CSRF Rack middleware}
+  s.rubyforge_project = "rackcsrf"
+  s.rubygems_version = "1.8.11"
+  s.summary = "Anti-CSRF Rack middleware"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -82,17 +93,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<cucumber>, [">= 0.1.13"])
       s.add_development_dependency(%q<rack-test>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 2.0.0"])
+      s.add_development_dependency(%q<rdoc>, [">= 2.4.2"])
     else
       s.add_dependency(%q<rack>, [">= 0.9"])
       s.add_dependency(%q<cucumber>, [">= 0.1.13"])
       s.add_dependency(%q<rack-test>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 2.0.0"])
+      s.add_dependency(%q<rdoc>, [">= 2.4.2"])
     end
   else
     s.add_dependency(%q<rack>, [">= 0.9"])
     s.add_dependency(%q<cucumber>, [">= 0.1.13"])
     s.add_dependency(%q<rack-test>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 2.0.0"])
+    s.add_dependency(%q<rdoc>, [">= 2.4.2"])
   end
 end
 
