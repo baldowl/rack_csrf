@@ -1,7 +1,7 @@
 require 'rake/clean'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'jeweler'
 
 Cucumber::Rake::Task.new :features
@@ -14,9 +14,10 @@ task :default => :spec
 
 version = File.exists?('VERSION') ? File.read('VERSION').strip : ''
 
-Rake::RDocTask.new :doc do |rdoc|
+RDoc::Task.new :doc do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title = "Rack::Csrf #{version}"
+  rdoc.main = 'README.rdoc'
   rdoc.rdoc_files.include('README.rdoc', 'LICENSE.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
@@ -34,6 +35,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_development_dependency 'cucumber', '>= 0.1.13'
   gem.add_development_dependency 'rack-test'
   gem.add_development_dependency 'rspec', '>= 2.0.0'
+  gem.add_development_dependency 'rdoc', '>= 2.4.2'
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'
   gem.test_files.clear
