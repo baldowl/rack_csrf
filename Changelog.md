@@ -1,3 +1,15 @@
+# v2.3.0 (2011-10-23)
+
+* Updated examples' Gemfiles.
+* Moved to use the RDoc gem.
+* new option :check_only (courtesy of [ghermeto](https://github.com/ghermeto))
+* Cuba example.
+* Changed request checking to look at GET+POST data.
+* Added support for custom HTTP methods.
+* Promoted public methods' shorter aliases to main API.
+
+
+
 # v2.2.0 (2011-04-12)
 
 * Simplified specs and some Cucumber's steps.
