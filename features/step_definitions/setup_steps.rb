@@ -37,6 +37,11 @@ Given /^a rack with the anti\-CSRF middleware and the :check_also option$/ do |t
   When 'I insert the anti-CSRF middleware with the :check_also option', table
 end
 
+Given /^a rack with the anti\-CSRF middleware and the :check_only option$/ do |table|
+  Given 'a rack with the session middleware'
+  When 'I insert the anti-CSRF middleware with the :check_only option', table
+end
+
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
@@ -74,6 +79,13 @@ end
 When /^I insert the anti\-CSRF middleware with the :check_also option$/ do |table|
   check_also = table.hashes.collect {|t| t.values}.flatten
   @rack_builder.use Rack::Csrf, :check_also => check_also
+  @app = toy_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
+end
+
+When /^I insert the anti\-CSRF middleware with the :check_only option$/ do |table|
+  must_be_checked = table.hashes.collect {|t| t.values}.flatten
+  @rack_builder.use Rack::Csrf, :check_only => must_be_checked
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
