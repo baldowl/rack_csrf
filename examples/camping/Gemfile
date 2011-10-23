@@ -1,4 +1,4 @@
 source 'http://rubygems.org'
 
-gem 'camping', '2.1'
-gem 'markaby', '0.7.1'
+gem 'camping', '>= 2.1', '<= 2.1.467'
+gem 'markaby', '>= 0.7.1', '<= 0.7.2'
