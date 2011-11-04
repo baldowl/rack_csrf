@@ -32,7 +32,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = 'https://github.com/baldowl/rack_csrf'
   gem.rubyforge_project = 'rackcsrf'
   gem.add_dependency 'rack', '>= 0.9'
-  gem.add_development_dependency 'cucumber', '>= 0.1.13'
+  gem.add_development_dependency 'cucumber', '>= 1.1.1'
   gem.add_development_dependency 'rack-test'
   gem.add_development_dependency 'rspec', '>= 2.0.0'
   gem.add_development_dependency 'rdoc', '>= 2.4.2'

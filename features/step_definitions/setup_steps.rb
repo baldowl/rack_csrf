@@ -8,38 +8,38 @@ end
 # a single step definition with a few captures and more complex checkings.
 
 Given /^a rack with the anti\-CSRF middleware$/ do
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware'
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware'
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :raise option$/ do
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :raise option'
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :raise option'
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :skip option$/ do |table|
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :skip option', table
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :field option$/ do
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :field option'
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :field option'
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :key option$/ do
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :key option'
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :key option'
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :check_also option$/ do |table|
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :check_also option', table
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :check_also option', table
 end
 
 Given /^a rack with the anti\-CSRF middleware and the :check_only option$/ do |table|
-  Given 'a rack with the session middleware'
-  When 'I insert the anti-CSRF middleware with the :check_only option', table
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :check_only option', table
 end
 
 # Yes, they're not as DRY as possible, but I think they're more readable than
