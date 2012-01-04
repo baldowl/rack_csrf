@@ -17,8 +17,8 @@ module Rack
       @app = app
 
       @raisable = opts[:raise] || false
-      @to_be_skipped = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
-      @to_be_checked = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
+      @skip_list = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
 
@@ -69,12 +69,17 @@ module Rack
 
     protected
 
+    # Return +true+ if the given request appears in the <b>skip list</b> or,
+    # when the <b>check only list</b> is not empty (i.e., we are working in
+    # the "reverse mode" triggered by the +check_only+ option), it does not
+    # appear in the <b>check only list.</b>
     def skip_checking request
-      skip = any? @to_be_skipped, request
-      allow = any? @to_be_checked, request
-      skip || (!@to_be_checked.empty? && !allow)
+      to_be_skipped = any? @skip_list, request
+      to_be_checked = any? @check_only_list, request
+      to_be_skipped || (!@check_only_list.empty? && !to_be_checked)
     end
-    
+
+    # Returns +true+ when the given list "includes" the request.
     def any? list, request
       pi = request.path_info.empty? ? '/' : request.path_info
       list.any? do |route|
