@@ -22,6 +22,11 @@ Given /^a rack with the anti\-CSRF middleware and the :skip option$/ do |table|
   step 'I insert the anti-CSRF middleware with the :skip option', table
 end
 
+Given /^a rack with the anti\-CSRF middleware and the :skip_if option$/ do |table|
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :skip_if option', table
+end
+
 Given /^a rack with the anti\-CSRF middleware and the :field option$/ do
   step 'a rack with the session middleware'
   step 'I insert the anti-CSRF middleware with the :field option'
@@ -60,6 +65,15 @@ end
 When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
   skippable = table.hashes.collect {|t| t.values}.flatten
   @rack_builder.use Rack::Csrf, :skip => skippable
+  @app = toy_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
+end
+
+When /^I insert the anti\-CSRF middleware with the :skip_if option$/ do |table|
+  skippable = table.hashes.collect {|t| t.values}
+  @rack_builder.use Rack:: Csrf, :skip_if => Proc.new { |request|
+    skippable.any? { |name, value| request.env[name] == value }
+  }
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end

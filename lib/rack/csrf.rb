@@ -18,6 +18,7 @@ module Rack
 
       @raisable = opts[:raise] || false
       @skip_list = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @skip_if = opts[:skip_if] if opts[:skip_if]
       @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
       @@field = opts[:field] if opts[:field]
       @@key = opts[:key] if opts[:key]
@@ -75,6 +76,7 @@ module Rack
     # appear in the <b>check only list.</b>
     def skip_checking request
       to_be_skipped = any? @skip_list, request
+      to_be_skipped ||= @skip_if && @skip_if.call(request)
       to_be_checked = any? @check_only_list, request
       to_be_skipped || (!@check_only_list.empty? && !to_be_checked)
     end
