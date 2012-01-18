@@ -62,6 +62,16 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: empty.
 
+[<tt>:skip_if</tt>]
+  Sets a lambda/Proc which is executed on every request to determine if request
+  should be passed untouched or blocked:
+
+    use Rack::Csrf, :skip_if => lambda { |request|
+      request.env.key?('HTTP_X_API_TOKEN')
+    }    
+
+  Default value: empty.
+
 [<tt>:field</tt>]
   Default field name (see below) is <tt>_csrf</tt>; you can adapt it to
   specific needs.
