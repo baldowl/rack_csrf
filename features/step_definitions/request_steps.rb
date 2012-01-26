@@ -39,3 +39,20 @@ When /^it receives a (.*) request with neither PATH_INFO nor CSRF token$/ do |ht
     @exception = e
   end
 end
+
+When /^it receives a request with headers (.+) = ([^ ]+) without the CSRF token$/ do |name, value|
+  begin
+    @browser.request '/', Hash[:method, 'POST', name, value]
+  rescue Exception => e
+    @exception = e
+  end
+end
+
+When /^it receives a request with headers (.+) = ([^,]+), (.+), and without the CSRF token$/ do |name, value, method|
+  begin
+    @browser.request '/', Hash[:method, method, name, value]
+  rescue Exception => e
+    @exception = e
+  end
+end
+
