@@ -70,10 +70,11 @@ module Rack
 
     protected
 
-    # Return +true+ if the given request appears in the <b>skip list</b> or,
-    # when the <b>check only list</b> is not empty (i.e., we are working in
-    # the "reverse mode" triggered by the +check_only+ option), it does not
-    # appear in the <b>check only list.</b>
+    # Return +true+ if the given request appears in the <b>skip list</b> or
+    # the <b>conditional skipping code</b> return true or, when the <b>check
+    # only list</b> is not empty (i.e., we are working in the "reverse mode"
+    # triggered by the +check_only+ option), it does not appear in the
+    # <b>check only list.</b>
     def skip_checking request
       to_be_skipped = any? @skip_list, request
       to_be_skipped ||= @skip_if && @skip_if.call(request)
