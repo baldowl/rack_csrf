@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'spec_helper.rb')
+require 'spec_helper'
 
 describe Rack::Csrf do
   describe 'key' do
@@ -114,77 +114,53 @@ describe Rack::Csrf do
   end
 
   describe 'skip_checking' do
-    class MockReq
-      attr_accessor :path_info, :request_method
+    let :request do
+      double 'Request',
+        :path_info => '/hello',
+        :request_method => 'POST',
+        :env => {'HTTP_X_VERY_SPECIAL_HEADER' => 'so true'}
     end
 
-    before :each do
-      @request = MockReq.new
-      @request.path_info = '/hello'
-      @request.request_method = 'POST'
-    end
-
-    context 'with empty :skip and :check_only lists' do
+    context 'when the request is not in any list and does not satisfy the custom check' do
       let(:csrf) { Rack::Csrf.new nil }
 
-      it 'should run the check, irrespective of the request' do
-        csrf.send(:skip_checking, @request).should be_false
+      it 'should run the check' do
+        csrf.send(:skip_checking, request).should be_false
       end
     end
 
-    context 'with routes in the :skip list and nothing in the :check_only list' do
+    context 'when the request is included in the :skip list' do
       let(:csrf) { Rack::Csrf.new nil, :skip => ['POST:/hello'] }
 
-      it 'should skip the check when the request is included in the :skip list' do
-        csrf.send(:skip_checking, @request).should be_true
-      end
-
-      it 'should run the check when the request is not in the :skip list' do
-        @request.path_info = '/byebye'
-        csrf.send(:skip_checking, @request).should be_false
+      it 'should not run the check' do
+        csrf.send(:skip_checking, request).should be_true
       end
     end
 
-    context 'with routes in the :check_only list and nothing in the :skip list' do
-      let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
+    context 'when the request is not included in the :skip list' do
+      context 'but the request satisfies the custom check' do
+        let(:csrf) { Rack::Csrf.new nil, :skip_if => lambda { |req| req.env.key?('HTTP_X_VERY_SPECIAL_HEADER') } }
 
-      it 'should run the check when the request is included in the :check_only list' do
-        csrf.send(:skip_checking, @request).should be_false
+        it 'should not run the check' do
+          csrf.send(:skip_checking, request).should be_true
+        end
       end
 
-      it 'should skip the check when the request is not in the :check_only list' do
-        @request.path_info = '/byebye'
-        csrf.send(:skip_checking, @request).should be_true
-      end
-    end
+      context 'and the request does not satisfies the custom check' do
+        context 'but the request is included in the :check_only list' do
+          let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
 
-    context 'with different routes in the :skip and :check_only lists' do
-      let :csrf do
-        Rack::Csrf.new nil,
-          :skip => ['POST:/hello'],
-          :check_only => ['POST:/byebye']
-      end
+          it 'should run the check' do
+            csrf.send(:skip_checking, request).should be_false
+          end
+        end
 
-      it 'should skip the check when the request is included in the :skip list' do
-        csrf.send(:skip_checking, @request).should be_true
-      end
+        context 'and the request is not included in the :check_only list' do
+          let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/ciao'] }
 
-      it 'should run the check when the request is included in the :check_only list' do
-        @request.path_info = '/byebye'
-        csrf.send(:skip_checking, @request).should be_false
-      end
-    end
-
-    context 'with the same routes in the :check_only and :skip lists' do
-      let :csrf do
-        Rack::Csrf.new nil,
-          :skip => ['POST:/hello'],
-          :check_only => ['POST:/hello']
-      end
-
-      context 'when the request is included in one of the list' do
-        it 'should ignore the :check_only list and skip the check' do
-          csrf.send(:skip_checking, @request).should be_true
+          it 'should not run the check' do
+            csrf.send(:skip_checking, request).should be_true
+          end
         end
       end
     end
