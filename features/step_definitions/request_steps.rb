@@ -55,4 +55,3 @@ When /^it receives a request with headers (.+) = ([^,]+), (.+), and without the 
     @exception = e
   end
 end
-

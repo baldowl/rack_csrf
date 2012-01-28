@@ -87,7 +87,7 @@ When /^I insert the anti\-CSRF middleware with the :skip and :skip_if options$/ 
   data = table.hashes.collect {|t| t.values}[0]
   headers = data[0..1]
   skippable = data[2]
-  
+
   @rack_builder.use Rack:: Csrf, :skip => [skippable], :skip_if => Proc.new { |request|
     skippable.any? { |name, value| request.env[name] == value }
   }
