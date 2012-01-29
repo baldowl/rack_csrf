@@ -121,7 +121,7 @@ describe Rack::Csrf do
         :env => {'HTTP_X_VERY_SPECIAL_HEADER' => 'so true'}
     end
 
-    context 'when the request is not in any list and does not satisfy the custom check' do
+    context 'when the lists are empty and there is no custom check' do
       let(:csrf) { Rack::Csrf.new nil }
 
       it 'should run the check' do
@@ -147,19 +147,29 @@ describe Rack::Csrf do
       end
 
       context 'and the request does not satisfies the custom check' do
-        context 'but the request is included in the :check_only list' do
-          let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
+        context 'and the :check_only list is empty' do
+          let(:csrf) { Rack::Csrf.new nil, :check_only => [] }
 
           it 'should run the check' do
             csrf.send(:skip_checking, request).should be_false
           end
         end
 
-        context 'and the request is not included in the :check_only list' do
-          let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/ciao'] }
+        context 'and the :check_only list is not empty' do
+          context 'and the request is included in the :check_only list' do
+            let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
 
-          it 'should not run the check' do
-            csrf.send(:skip_checking, request).should be_true
+            it 'should run the check' do
+              csrf.send(:skip_checking, request).should be_false
+            end
+          end
+
+          context 'but the request is not included in the :check_only list' do
+            let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/ciao'] }
+
+            it 'should not run the check' do
+              csrf.send(:skip_checking, request).should be_true
+            end
           end
         end
       end
