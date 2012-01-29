@@ -7,8 +7,7 @@ describe Rack::Csrf do
     end
 
     it "should be the value of the :key option" do
-      fakeapp = lambda {|env| [200, {}, []]}
-      Rack::Csrf.new fakeapp, :key => 'whatever'
+      Rack::Csrf.new nil, :key => 'whatever'
       Rack::Csrf.key.should == 'whatever'
     end
   end
@@ -25,8 +24,7 @@ describe Rack::Csrf do
     end
 
     it "should be the value of :field option" do
-      fakeapp = lambda {|env| [200, {}, []]}
-      Rack::Csrf.new fakeapp, :field => 'whatever'
+      Rack::Csrf.new nil, :field => 'whatever'
       Rack::Csrf.field.should == 'whatever'
     end
   end
@@ -44,8 +42,7 @@ describe Rack::Csrf do
 
     context 'when accessing/manipulating the session' do
       before do
-        fakeapp = lambda {|env| [200, {}, []]}
-        Rack::Csrf.new fakeapp, :key => 'whatever'
+        Rack::Csrf.new nil, :key => 'whatever'
       end
 
       it 'should use the key provided by method key' do
@@ -84,8 +81,7 @@ describe Rack::Csrf do
     let(:env) { {'rack.session' => {}} }
 
     let :tag do
-      fakeapp = lambda {|env| [200, {}, []]}
-      Rack::Csrf.new fakeapp, :field => 'whatever'
+      Rack::Csrf.new nil, :field => 'whatever'
       Rack::Csrf.tag env
     end
 
