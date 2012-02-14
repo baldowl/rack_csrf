@@ -10,21 +10,23 @@ module Rack
     class SessionUnavailable < StandardError; end
     class InvalidCsrfToken < StandardError; end
 
-    @@field = '_csrf'
-    @@key = 'csrf.token'
+    @@field  = '_csrf'
+    @@header = 'X_CSRF_TOKEN'
+    @@key    = 'csrf.token'
 
     def initialize(app, opts = {})
       @app = app
 
-      @raisable = opts[:raise] || false
-      @skip_list = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
-      @skip_if = opts[:skip_if] if opts[:skip_if]
+      @raisable        = opts[:raise] || false
+      @skip_list       = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @skip_if         = opts[:skip_if] if opts[:skip_if]
       @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
-      @@field = opts[:field] if opts[:field]
-      @@key = opts[:key] if opts[:key]
+      @@field          = opts[:field] if opts[:field]
+      @@header         = opts[:header] if opts[:header]
+      @@key            = opts[:key] if opts[:key]
 
       standard_http_methods = %w(POST PUT DELETE PATCH)
-      check_also = opts[:check_also] || []
+      check_also            = opts[:check_also] || []
       @http_methods = (standard_http_methods + check_also).flatten.uniq
     end
 
@@ -36,7 +38,8 @@ module Rack
       req = Rack::Request.new(env)
       untouchable = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
-        req.params[self.class.field] == env['rack.session'][self.class.key]
+        req.params[self.class.field] == env['rack.session'][self.class.key] ||
+        env[rackify_header(self.class.header)] == env['rack.session'][self.class.key]
       if untouchable
         @app.call(env)
       else
@@ -45,12 +48,21 @@ module Rack
       end
     end
 
+    # rack appends "HTTP_" to headers + upcases and replaces "-" with "_"
+    def rackify_header(unrackified_key)
+      "HTTP_#{unrackified_key.gsub('-','_').upcase}"
+    end
+
     def self.key
       @@key
     end
 
     def self.field
       @@field
+    end
+
+    def self.header
+      @@header
     end
 
     def self.token(env)
