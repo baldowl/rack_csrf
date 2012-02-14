@@ -42,6 +42,11 @@ Given /^a rack with the anti\-CSRF middleware and the :key option$/ do
   step 'I insert the anti-CSRF middleware with the :key option'
 end
 
+Given /^a rack with the anti\-CSRF middleware and the :header option$/ do
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :header option'
+end
+
 Given /^a rack with the anti\-CSRF middleware and the :check_also option$/ do |table|
   step 'a rack with the session middleware'
   step 'I insert the anti-CSRF middleware with the :check_also option', table
@@ -103,6 +108,12 @@ end
 
 When /^I insert the anti\-CSRF middleware with the :key option$/ do
   @rack_builder.use Rack::Csrf, :key => 'fantasy_name'
+  @app = toy_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
+end
+
+When /^I insert the anti\-CSRF middleware with the :header option$/ do
+  @rack_builder.use Rack::Csrf, :header => 'fantasy_name'
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end

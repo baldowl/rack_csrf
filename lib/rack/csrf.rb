@@ -39,18 +39,13 @@ module Rack
       untouchable = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
         req.params[self.class.field] == env['rack.session'][self.class.key] ||
-        env[rackify_header(self.class.header)] == env['rack.session'][self.class.key]
+        req.env[self.class.rackified_header] == env['rack.session'][self.class.key]
       if untouchable
         @app.call(env)
       else
         raise InvalidCsrfToken if @raisable
         [403, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
       end
-    end
-
-    # rack appends "HTTP_" to headers + upcases and replaces "-" with "_"
-    def rackify_header(unrackified_key)
-      "HTTP_#{unrackified_key.gsub('-','_').upcase}"
     end
 
     def self.key
@@ -65,6 +60,10 @@ module Rack
       @@header
     end
 
+    def self.rackified_header
+      "HTTP_#{@@header.gsub('-','_').upcase}"
+    end
+
     def self.token(env)
       env['rack.session'][key] ||= SecureRandom.base64(32)
     end
@@ -73,11 +72,18 @@ module Rack
       %Q(<input type="hidden" name="#{field}" value="#{token(env)}" />)
     end
 
+    def self.metatag(env, options = {})
+      name = options.delete(:name) || '_csrf'
+      %Q(<meta name="#{name}" content="#{token(env)}" />)
+    end
+
     class << self
       alias_method :csrf_key, :key
       alias_method :csrf_field, :field
+      alias_method :csrf_header, :header
       alias_method :csrf_token, :token
       alias_method :csrf_tag, :tag
+      alias_method :csrf_metatag, :metatag
     end
 
     protected

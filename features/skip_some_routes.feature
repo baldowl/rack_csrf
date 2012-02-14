@@ -8,7 +8,7 @@ Feature: Skipping the check for some specific routes
       | POST:/not_.*\.json   |
       | DELETE:/cars/.*\.xml |
       | PATCH:/this/one/too  |
-    When it receives a <method> request for <path> without the CSRF token
+    When it receives a <method> request for <path> without the CSRF token or header
     Then it lets it pass untouched
 
     Examples:
@@ -28,7 +28,7 @@ Feature: Skipping the check for some specific routes
       | POST:/not_.*\.json   |
       | DELETE:/cars/.*\.xml |
       | PATCH:/this/one/too  |
-    When it receives a <method> request for <path> without the CSRF token
+    When it receives a <method> request for <path> without the CSRF token or header
     Then it responds with 403
     And the response body is empty
 
@@ -63,7 +63,7 @@ Feature: Skipping the check for some specific routes
       | PUT:/    |
       | DELETE:/ |
       | PATCH:/  |
-    When it receives a <method> request with neither PATH_INFO nor CSRF token
+    When it receives a <method> request with neither PATH_INFO nor CSRF token or header
     Then it lets it pass untouched
 
     Examples:

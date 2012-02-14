@@ -18,8 +18,33 @@ Feature: Handling custom HTTP methods
       | DELETE |
       | PATCH  |
 
+  Scenario Outline: Blocking "standard" requests without the header
+    When it receives a <method> request without the CSRF header
+    Then it responds with 403
+    And the response body is empty
+
+    Examples:
+      | method |
+      | POST   |
+      | PUT    |
+      | DELETE |
+      | PATCH  |
+
+
   Scenario Outline: Blocking "standard" requests with the wrong token
     When it receives a <method> request with the wrong CSRF token
+    Then it responds with 403
+    And the response body is empty
+
+    Examples:
+      | method |
+      | POST   |
+      | PUT    |
+      | DELETE |
+      | PATCH  |
+
+  Scenario Outline: Blocking "standard" requests with the wrong header
+    When it receives a <method> request with the wrong CSRF header
     Then it responds with 403
     And the response body is empty
 
@@ -40,6 +65,16 @@ Feature: Handling custom HTTP methods
       | ME     |
       | YOU    |
 
+  Scenario Outline: Blocking requests without the header
+    When it receives a <method> request without the CSRF header
+    Then it responds with 403
+    And the response body is empty
+
+    Examples:
+      | method |
+      | ME     |
+      | YOU    |
+
   Scenario Outline: Blocking requests with the wrong token
     When it receives a <method> request with the wrong CSRF token
     Then it responds with 403
@@ -49,6 +84,17 @@ Feature: Handling custom HTTP methods
       | method |
       | ME     |
       | YOU    |
+
+  Scenario Outline: Blocking requests with the wrong header
+    When it receives a <method> request with the wrong CSRF header
+    Then it responds with 403
+    And the response body is empty
+
+    Examples:
+      | method |
+      | ME     |
+      | YOU    |
+
 
   Scenario Outline: Letting pass "unknown" and safe requests without the token
     When it receives a <method> request without the CSRF token

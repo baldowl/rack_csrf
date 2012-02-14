@@ -5,7 +5,7 @@ Feature: Skipping the check if a block passes
       | name        | value   |
       | token       | skip    |
       | User-Agent  | MSIE    |
-    When it receives a request with headers <name> = <value> without the CSRF token
+    When it receives a request with headers <name> = <value> without the CSRF token or header
     Then it lets it pass untouched
 
     Examples:
@@ -18,7 +18,7 @@ Feature: Skipping the check if a block passes
       | name        | value   |
       | token       | skip    |
       | User-Agent  | MSIE    |
-    When it receives a request with headers <name> = <value> without the CSRF token
+    When it receives a request with headers <name> = <value> without the CSRF token or header
     Then it responds with 403
 
     Examples:
@@ -31,7 +31,7 @@ Feature: Skipping the check if a block passes
     Given a rack with the anti-CSRF middleware and both the :skip and :skip_if options
       | name        | value   | path    |
       | token       | skip    | POST:/  |
-    When it receives a request with headers <name> = <value>, <method>, and without the CSRF token
+    When it receives a request with headers <name> = <value>, <method>, and without the CSRF token or header
     Then it lets it pass untouched
 
     Examples:
