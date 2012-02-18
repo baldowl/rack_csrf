@@ -35,6 +35,28 @@ describe Rack::Csrf do
     end
   end
 
+  describe 'header' do
+    subject { Rack::Csrf.header }
+    it      { should == 'X_CSRF_TOKEN' }
+
+    context "when set to something" do
+      before  { Rack::Csrf.new nil, :header => 'something' }
+      subject { Rack::Csrf.header }
+      it      { should == 'something' }
+    end
+  end
+
+  describe 'csrf_header' do
+    subject { Rack::Csrf.method(:csrf_header) }
+    it      { should == Rack::Csrf.method(:header) }
+  end
+
+  describe 'rackified_header' do
+    before  { Rack::Csrf.new nil, :header => 'my-header' }
+    subject { Rack::Csrf.rackified_header }
+    it      { should == 'HTTP_MY_HEADER'}
+  end
+
   describe 'token(env)' do
     let(:env) { {'rack.session' => {}} }
 
@@ -106,6 +128,46 @@ describe Rack::Csrf do
   describe 'csrf_tag(env)' do
     it 'should be the same as method tag(env)' do
       Rack::Csrf.method(:csrf_tag).should == Rack::Csrf.method(:tag)
+    end
+  end
+
+  describe 'metatag(env)' do
+    let(:env) { {'rack.session' => {}} }
+
+    context 'by default' do
+      let :metatag do
+        Rack::Csrf.new nil, :header => 'whatever'
+        Rack::Csrf.metatag env
+      end
+
+      subject { metatag }
+      it { should =~ /^<meta/ }
+      it { should =~ /name="_csrf"/ }
+      it "should have the content provided by method token(env)" do
+        quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
+        metatag.should =~ /#{quoted_value}/
+      end
+    end
+
+    context 'with custom name' do
+      let :metatag do
+        Rack::Csrf.new nil, :header => 'whatever'
+        Rack::Csrf.metatag env, :name => 'custom_name'
+      end
+
+      subject { metatag }
+      it { should =~ /^<meta/ }
+      it { should =~ /name="custom_name"/ }
+      it "should have the content provided by method token(env)" do
+        quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
+        metatag.should =~ /#{quoted_value}/
+      end
+    end
+  end
+
+  describe 'csrf_metatag(env)' do
+    it 'should be the same as method metatag(env)' do
+      Rack::Csrf.method(:csrf_metatag).should == Rack::Csrf.method(:metatag)
     end
   end
 

@@ -10,21 +10,23 @@ module Rack
     class SessionUnavailable < StandardError; end
     class InvalidCsrfToken < StandardError; end
 
-    @@field = '_csrf'
-    @@key = 'csrf.token'
+    @@field  = '_csrf'
+    @@header = 'X_CSRF_TOKEN'
+    @@key    = 'csrf.token'
 
     def initialize(app, opts = {})
       @app = app
 
-      @raisable = opts[:raise] || false
-      @skip_list = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
-      @skip_if = opts[:skip_if] if opts[:skip_if]
+      @raisable        = opts[:raise] || false
+      @skip_list       = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
+      @skip_if         = opts[:skip_if] if opts[:skip_if]
       @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
-      @@field = opts[:field] if opts[:field]
-      @@key = opts[:key] if opts[:key]
+      @@field          = opts[:field] if opts[:field]
+      @@header         = opts[:header] if opts[:header]
+      @@key            = opts[:key] if opts[:key]
 
       standard_http_methods = %w(POST PUT DELETE PATCH)
-      check_also = opts[:check_also] || []
+      check_also            = opts[:check_also] || []
       @http_methods = (standard_http_methods + check_also).flatten.uniq
     end
 
@@ -36,7 +38,8 @@ module Rack
       req = Rack::Request.new(env)
       untouchable = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
-        req.params[self.class.field] == env['rack.session'][self.class.key]
+        req.params[self.class.field] == env['rack.session'][self.class.key] ||
+        req.env[self.class.rackified_header] == env['rack.session'][self.class.key]
       if untouchable
         @app.call(env)
       else
@@ -53,6 +56,14 @@ module Rack
       @@field
     end
 
+    def self.header
+      @@header
+    end
+
+    def self.rackified_header
+      "HTTP_#{@@header.gsub('-','_').upcase}"
+    end
+
     def self.token(env)
       env['rack.session'][key] ||= SecureRandom.base64(32)
     end
@@ -61,11 +72,18 @@ module Rack
       %Q(<input type="hidden" name="#{field}" value="#{token(env)}" />)
     end
 
+    def self.metatag(env, options = {})
+      name = options.delete(:name) || '_csrf'
+      %Q(<meta name="#{name}" content="#{token(env)}" />)
+    end
+
     class << self
       alias_method :csrf_key, :key
       alias_method :csrf_field, :field
+      alias_method :csrf_header, :header
       alias_method :csrf_token, :token
       alias_method :csrf_tag, :tag
+      alias_method :csrf_metatag, :metatag
     end
 
     protected

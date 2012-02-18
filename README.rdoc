@@ -18,6 +18,8 @@ session. If there's a token and it matches with the stored one, then the
 request is handed over to the next rack component; if not, Rack::Csrf
 immediately replies with an empty response.
 
+The anti-forging token can be passed as a request parameter or a header.
+
 I have not tested Rack::Csrf with Rack 0.4.0 or earlier versions, but it could
 possibly work.
 
@@ -95,6 +97,35 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: csrf.token
 
+[<tt>:header</tt>]
+  Default header name (see below) is <tt>X_CSRF_TOKEN</tt>; you can adapt it to
+  specific needs.
+
+    use Rack::Csrf, :header => 'MY_CSRF_TOKEN_HEADER'
+
+  This is useful if we want to configure our application to send the csrf
+  token in all of our ajax requests via a header. We could implement something
+  along the lines of the following:
+
+    (function(jQuery) {
+      /**
+        * Set the csrf token for each ajax operation,
+        * rack / rack_csrf handle the rest.
+        * Assumes your layout has a metatag with name of "_csrf" and you're using
+        * the default Rack:Csrf header setup.
+        */
+      jQuery.ajaxSetup({
+        beforeSend: function(xhr) {
+          var token = jQuery('meta[name="_csrf"]').attr('content');
+          xhr.setRequestHeader('X_CSRF_TOKEN', token);
+        }
+      });
+    }(jQuery));
+
+  Default value: X_CSRF_TOKEN
+
+  Note that Rack will append "HTTP_" to this value.
+
 [<tt>:check_also</tt>]
   By passing an array of uppercase strings to this option you can add them to
   the list of HTTP methods which "mark" requests that must be searched for the
@@ -127,6 +158,9 @@ token.
 [<tt>Rack::Csrf.field</tt> (also <tt>Rack::Csrf.csrf_field</tt>)]
   Returns the name of the field that must be present in the request.
 
+[<tt>Rack::Csrf.header</tt> (also <tt>Rack::Csrf.csrf_header</tt>)]
+  Returns the name of the header that must be present in the request.
+
 [<tt>Rack::Csrf.token(env)</tt> (also <tt>Rack::Csrf.csrf_token(env)</tt>)]
   Given the request's environment, it generates a random token, stuffs it in
   the session and returns it to the caller or simply retrieves the already
@@ -136,6 +170,16 @@ token.
   Given the request's environment, it generates a small HTML fragment to
   insert the token in a standard form like an hidden input field with the
   right value already entered for you.
+
+[<tt>Rack::Csrf.metatag(env, options = {})</tt> (also <tt>Rack::Csrf.csrf_metatag(env, options = {})</tt>)]
+  Given the request's environment, it generates a small HTML fragment to
+  insert the token in a standard metatag within your layout's head with the
+  right value already entered for you.
+
+  <tt>options</tt> is an optional hash that can currently take a +name+ setting, which
+  will alter the metatag's name attribute.
+
+  Default name: _csrf
 
 == Working examples
 

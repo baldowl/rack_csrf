@@ -18,3 +18,17 @@ Feature: Inspecting also GET requests
     When it receives a GET request without the CSRF token
     Then it responds with 403
     And the response body is empty
+
+  Scenario: GET request with the right CSRF header
+    When it receives a GET request with the right CSRF header
+    Then it lets it pass untouched
+
+  Scenario: GET request with the wrong CSRF header
+    When it receives a GET request with the wrong CSRF header
+    Then it responds with 403
+    And the response body is empty
+
+  Scenario: GET request without the CSRF header
+    When it receives a GET request without the CSRF header
+    Then it responds with 403
+    And the response body is empty
