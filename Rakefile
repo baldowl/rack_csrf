@@ -1,3 +1,13 @@
+require 'rubygems'
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+
 require 'rake/clean'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
@@ -5,11 +15,9 @@ require 'rdoc/task'
 require 'jeweler'
 
 Cucumber::Rake::Task.new :features
-task :features => :check_dependencies
 task :default => :features
 
 RSpec::Core::RakeTask.new :spec
-task :spec => :check_dependencies
 task :default => :spec
 
 version = File.exists?('VERSION') ? File.read('VERSION').strip : ''
@@ -31,11 +39,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = 'emanuele.vicentini@gmail.com'
   gem.homepage = 'https://github.com/baldowl/rack_csrf'
   gem.rubyforge_project = 'rackcsrf'
-  gem.add_dependency 'rack', '>= 0.9'
-  gem.add_development_dependency 'cucumber', '>= 1.1.1'
-  gem.add_development_dependency 'rack-test'
-  gem.add_development_dependency 'rspec', '>= 2.0.0'
-  gem.add_development_dependency 'rdoc', '>= 2.4.2'
+  # dependencies defined in Gemfile
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'
   gem.test_files.clear
