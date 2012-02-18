@@ -60,10 +60,6 @@ module Rack
       @@header
     end
 
-    def self.rackified_header
-      "HTTP_#{@@header.gsub('-','_').upcase}"
-    end
-
     def self.token(env)
       env['rack.session'][key] ||= SecureRandom.base64(32)
     end
@@ -88,7 +84,12 @@ module Rack
 
     protected
 
-    # Return +true+ if the given request appears in the <b>skip list</b> or
+    # Returns the custom header's name adapted to current standards.
+    def self.rackified_header
+      "HTTP_#{@@header.gsub('-','_').upcase}"
+    end
+
+    # Returns +true+ if the given request appears in the <b>skip list</b> or
     # the <b>conditional skipping code</b> return true or, when the <b>check
     # only list</b> is not empty (i.e., we are working in the "reverse mode"
     # triggered by the +check_only+ option), it does not appear in the

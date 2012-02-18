@@ -51,12 +51,6 @@ describe Rack::Csrf do
     it      { should == Rack::Csrf.method(:header) }
   end
 
-  describe 'rackified_header' do
-    before  { Rack::Csrf.new nil, :header => 'my-header' }
-    subject { Rack::Csrf.rackified_header }
-    it      { should == 'HTTP_MY_HEADER'}
-  end
-
   describe 'token(env)' do
     let(:env) { {'rack.session' => {}} }
 
@@ -169,6 +163,14 @@ describe Rack::Csrf do
     it 'should be the same as method metatag(env)' do
       Rack::Csrf.method(:csrf_metatag).should == Rack::Csrf.method(:metatag)
     end
+  end
+
+  # Protected/private API
+
+  describe 'rackified_header' do
+    before  { Rack::Csrf.new nil, :header => 'my-header' }
+    subject { Rack::Csrf.rackified_header }
+    it      { should == 'HTTP_MY_HEADER'}
   end
 
   describe 'skip_checking' do
