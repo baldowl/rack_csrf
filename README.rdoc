@@ -98,22 +98,21 @@ The following options allow you to tweak Rack::Csrf.
   Default value: csrf.token
 
 [<tt>:header</tt>]
-  Default header name (see below) is <tt>X_CSRF_TOKEN</tt>; you can adapt it to
-  specific needs.
+  Default header name (see below) is <tt>X_CSRF_TOKEN</tt>; you can adapt it
+  to specific needs.
 
     use Rack::Csrf, :header => 'MY_CSRF_TOKEN_HEADER'
 
-  This is useful if we want to configure our application to send the csrf
-  token in all of our ajax requests via a header. We could implement something
+  This is useful if we want to configure our application to send the CSRF
+  token in all of our AJAX requests via a header. We could implement something
   along the lines of the following:
 
     (function(jQuery) {
-      /**
-        * Set the csrf token for each ajax operation,
-        * rack / rack_csrf handle the rest.
-        * Assumes your layout has a metatag with name of "_csrf" and you're using
-        * the default Rack:Csrf header setup.
-        */
+      /*
+       * Set the CSRF token for each AJAX request, Rack::Csrf handle the rest.
+       * Assumes your layout has a metatag with name of "_csrf" and you're
+       * using the default Rack:Csrf header setup.
+       */
       jQuery.ajaxSetup({
         beforeSend: function(xhr) {
           var token = jQuery('meta[name="_csrf"]').attr('content');
@@ -176,8 +175,8 @@ token.
   insert the token in a standard metatag within your layout's head with the
   right value already entered for you.
 
-  <tt>options</tt> is an optional hash that can currently take a +name+ setting, which
-  will alter the metatag's name attribute.
+  <tt>options</tt> is an optional hash that can currently take a +name+
+  setting, which will alter the metatag's name attribute.
 
   Default name: _csrf
 
@@ -209,5 +208,5 @@ forgo responsibilities for keeping your application as safe as possible.
 
 == Copyright
 
-Copyright (c) 2009, 2010, 2011 Emanuele Vicentini. See LICENSE.rdoc for
+Copyright (c) 2009, 2010, 2011, 2012 Emanuele Vicentini. See LICENSE.rdoc for
 details.

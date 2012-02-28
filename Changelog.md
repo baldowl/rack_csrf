@@ -1,3 +1,16 @@
+# v2.4.0 (2012-02-28)
+
+* Updated examples' Gemfiles.
+* Dependency management is entrusted totally to Bundler.
+* Added support for CSRF validation via request headers (courtesy of
+  [jeffreyiacono](https://github.com/jeffreyiacono)).
+* Improved a bit documentation and testing code.
+* New option :skip_if (courtesy of
+  [jakubpawlowicz](https://github.com/jakubpawlowicz) and
+  [GoalSmashers](https://github.com/GoalSmashers)).
+
+
+
 # v2.3.0 (2011-10-23)
 
 * Updated examples' Gemfiles.
