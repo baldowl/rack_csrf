@@ -1,27 +1,19 @@
 require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
+require 'bundler/setup'
 
 require 'rake/clean'
-require 'cucumber/rake/task'
-require 'rspec/core/rake_task'
-require 'rdoc/task'
-require 'jeweler'
 
+require 'cucumber/rake/task'
 Cucumber::Rake::Task.new :features
 task :default => :features
 
+require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new :spec
 task :default => :spec
 
 version = File.exists?('VERSION') ? File.read('VERSION').strip : ''
 
+require 'rdoc/task'
 RDoc::Task.new :doc do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title = "Rack::Csrf #{version}"
@@ -30,6 +22,7 @@ RDoc::Task.new :doc do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+require 'jeweler'
 Jeweler::Tasks.new do |gem|
   gem.name = 'rack_csrf'
   gem.summary = 'Anti-CSRF Rack middleware'
