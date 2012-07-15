@@ -80,7 +80,8 @@ When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip_if option$/ do |table|
-  skippable = table.hashes.collect {|t| t.values}
+  skippable = {}
+  table.hashes.each {|row| skippable[row['name']] = row['value']}
   @rack_builder.use Rack:: Csrf, :skip_if => Proc.new { |request|
     skippable.any? { |name, value| request.env[name] == value }
   }
@@ -89,12 +90,15 @@ When /^I insert the anti\-CSRF middleware with the :skip_if option$/ do |table|
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip and :skip_if options$/ do |table|
-  data = table.hashes.collect {|t| t.values}[0]
-  headers = data[0..1]
-  skippable = data[2]
+  skip_option_arguments = []
+  skip_if_option_arguments = {}
+  table.hashes.each do |row|
+    skip_option_arguments << row['path']
+    skip_if_option_arguments[row['name']] = row['value']
+  end
 
-  @rack_builder.use Rack:: Csrf, :skip => [skippable], :skip_if => Proc.new { |request|
-    skippable.any? { |name, value| request.env[name] == value }
+  @rack_builder.use Rack:: Csrf, :skip => skip_option_arguments, :skip_if => Proc.new { |request|
+    skip_if_option_arguments.any? { |name, value| request.env[name] == value }
   }
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
