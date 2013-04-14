@@ -32,6 +32,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = 'emanuele.vicentini@gmail.com'
   gem.homepage = 'https://github.com/baldowl/rack_csrf'
   gem.rubyforge_project = 'rackcsrf'
+  gem.required_ruby_version = '>= 1.8.7'
   # dependencies defined in Gemfile
   gem.rdoc_options << '--line-numbers' << '--inline-source' << '--title' <<
     "Rack::Csrf #{version}" << '--main' << 'README.rdoc'

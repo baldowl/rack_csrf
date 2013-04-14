@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emanuele Vicentini"]
-  s.date = "2012-02-28"
+  s.date = "2013-04-14"
   s.description = "Anti-CSRF Rack middleware"
   s.email = "emanuele.vicentini@gmail.com"
   s.extra_rdoc_files = [
@@ -75,7 +75,6 @@ Gem::Specification.new do |s|
     "features/variation_on_header_name.feature",
     "features/variation_on_key_name.feature",
     "lib/rack/csrf.rb",
-    "lib/rack/vendor/securerandom.rb",
     "rack_csrf.gemspec",
     "spec/csrf_spec.rb",
     "spec/spec_helper.rb"
@@ -84,12 +83,13 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Rack::Csrf 2.4.0", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
+  s.required_ruby_version = Gem::Requirement.new(">= 1.8.7")
   s.rubyforge_project = "rackcsrf"
-  s.rubygems_version = "1.8.17"
+  s.rubygems_version = "2.0.3"
   s.summary = "Anti-CSRF Rack middleware"
 
   if s.respond_to? :specification_version then
-    s.specification_version = 3
+    s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rack>, [">= 0.9"])
