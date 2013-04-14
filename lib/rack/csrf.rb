@@ -1,9 +1,5 @@
 require 'rack'
-begin
-  require 'securerandom'
-rescue LoadError
-  require File.dirname(__FILE__) + '/vendor/securerandom'
-end
+require 'securerandom'
 
 module Rack
   class Csrf
