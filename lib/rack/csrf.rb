@@ -60,13 +60,13 @@ module Rack
       env['rack.session'][key] ||= SecureRandom.base64(32)
     end
 
-    def self.tag(env)
-      %Q(<input type="hidden" name="#{field}" value="#{token(env)}" />)
+    def self.tag(env, options = {})
+      %Q(<input type="hidden" name="#{field}" value="#{token(env)}"#{options[:doc_html] ? "" : " /"}>)
     end
 
     def self.metatag(env, options = {})
       name = options.delete(:name) || '_csrf'
-      %Q(<meta name="#{name}" content="#{token(env)}" />)
+      %Q(<meta name="#{name}" content="#{token(env)}"#{options[:doc_html] ? "" : " /"}>)
     end
 
     class << self
