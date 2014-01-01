@@ -17,6 +17,7 @@ module Rack
       @skip_list       = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
       @skip_if         = opts[:skip_if] if opts[:skip_if]
       @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
+      @lazy            = opts[:lazy] || false
       @@field          = opts[:field] if opts[:field]
       @@header         = opts[:header] if opts[:header]
       @@key            = opts[:key] if opts[:key]
@@ -30,10 +31,11 @@ module Rack
       unless env['rack.session']
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
-      self.class.token(env)
+      self.class.token(env) unless @lazy
       req = Rack::Request.new(env)
       untouchable = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
+        lazily_prefill_session(env) ||
         req.params[self.class.field] == env['rack.session'][self.class.key] ||
         req.env[self.class.rackified_header] == env['rack.session'][self.class.key]
       if untouchable
@@ -103,6 +105,13 @@ module Rack
       list.any? do |route|
         route =~ (request.request_method + ':' + pi)
       end
+    end
+
+    # Adds the CSRF token to our session if it's not already there.
+    #
+    # It must return false.
+    def lazily_prefill_session env
+      self.class.token(env) && false
     end
   end
 end

@@ -48,3 +48,8 @@ Feature: Setup of the middleware
       | POST:/check/me      |
       | PUT:/check/this/too |
     Then I get a fully functional rack
+
+  Scenario: Setup with the :lazy option
+    Given a rack with the session middleware
+    When I insert the anti-CSRF middleware with the :lazy option
+    Then I get a fully functional rack
