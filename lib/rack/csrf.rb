@@ -30,12 +30,11 @@ module Rack
       unless env['rack.session']
         raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
       end
-      self.class.token(env)
       req = Rack::Request.new(env)
       untouchable = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
-        req.params[self.class.field] == env['rack.session'][self.class.key] ||
-        req.env[self.class.rackified_header] == env['rack.session'][self.class.key]
+        req.params[self.class.field] == self.class.token(env) ||
+        req.env[self.class.rackified_header] == self.class.token(env)
       if untouchable
         @app.call(env)
       else
