@@ -20,9 +20,6 @@ immediately replies with an empty response.
 
 The anti-forging token can be passed as a request parameter or a header.
 
-I have not tested Rack::Csrf with Rack 0.4.0 or earlier versions, but it could
-possibly work.
-
 == Options
 
 The following options allow you to tweak Rack::Csrf.
