@@ -33,7 +33,11 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 1.8.7'
 
-  spec.add_runtime_dependency 'rack', '>= 1.1.0'
+  if ENV['TEST_WITH_RACK']
+    spec.add_runtime_dependency 'rack', "~> #{ENV['TEST_WITH_RACK']}"
+  else
+    spec.add_runtime_dependency 'rack', '>= 1.1.0'
+  end
 
   spec.add_development_dependency 'bundler', '>= 1.0.0'
   spec.add_development_dependency 'rake'
