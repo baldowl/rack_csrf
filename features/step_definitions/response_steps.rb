@@ -18,3 +18,11 @@ end
 Then /^an exception is climbing up the stack$/ do
   @exception.should be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end
+
+Then /^the session does not contain any token$/ do
+  @browser.last_request.env['rack.session'][Rack::Csrf.key].should be_nil
+end
+
+Then /^the session does contain a token$/ do
+  @browser.last_request.env['rack.session'][Rack::Csrf.key].should_not be_nil
+end

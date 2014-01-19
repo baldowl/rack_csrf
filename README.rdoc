@@ -131,6 +131,18 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: empty
 
+[<tt>:lazy</tt>]
+
+  Normally, we generate and store the anti-forging token before performing any
+  check on the incoming request and this can be a problem in some context. Set
+  this option to true to postpone the generate-and-store action after the
+  checks controlled by <tt>:skip</tt>, <tt>:skip_if</tt>, <tt>:check_only</tt>
+  and <tt>:check_also</tt> have been performed.
+
+    use Rack::Csrf, :lazy => true
+
+  Default value: false.
+
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
 introduced in Rack version 1.1.0 tightened the parsing of POST params, so
