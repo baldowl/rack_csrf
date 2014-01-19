@@ -76,6 +76,9 @@ The following options allow you to tweak Rack::Csrf.
   This option is useful if a guarded resource can be accessed by clients who
   support CSRF token (e.g. browsers) and by ones who don't (e.g. API clients).
 
+  Don't try to check the CSRF token: it could exist or not at this stage and
+  you should always let it alone.
+
   Default value: empty.
 
 [<tt>:field</tt>]
@@ -150,6 +153,10 @@ token.
 [<tt>Rack::Csrf.key</tt> (also <tt>Rack::Csrf.csrf_key</tt>)]
   Returns the name of the key used to store/retrieve the token from the Rack
   session.
+
+  Despite this class method, you should never try to retrieve the token with
+  code like <tt>env['rack.session'][Rack::Csrf.key]</tt>. See the `token`
+  method below.
 
 [<tt>Rack::Csrf.field</tt> (also <tt>Rack::Csrf.csrf_field</tt>)]
   Returns the name of the field that must be present in the request.
