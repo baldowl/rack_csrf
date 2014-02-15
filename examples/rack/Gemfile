@@ -1,3 +1,4 @@
 source 'http://rubygems.org'
 
-gem 'rack', '>= 1.0.0', '<= 1.4.1'
+gem 'rack_csrf', :path => File.expand_path('../../..', __FILE__)
+gem 'rack', '<= 1.5.2'

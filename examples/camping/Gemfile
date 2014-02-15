@@ -1,4 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'rack_csrf', :path => File.expand_path('../../..', __FILE__)
+gem 'rack', '~> 1.4.0'
 gem 'camping', '>= 2.1', '<= 2.1.467'
 gem 'markaby', '>= 0.7.1', '<= 0.7.2'

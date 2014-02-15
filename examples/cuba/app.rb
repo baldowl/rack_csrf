@@ -1,5 +1,7 @@
 Cuba.define do
   on get do
+    res['Content-Type'] = 'text/html'
+
     on '' do
       res.write render('views/form.erb')
     end

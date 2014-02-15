@@ -30,16 +30,21 @@ class LittleApp
 
   def self.call env
     req = Rack::Request.new env
+    res = Rack::Response.new
+
     if req.get?
       if req.path_info == '/notworking'
-        Rack::Response.new(@form_not_working.result(binding)).finish
+        res.write @form_not_working.result(binding)
       else
-        Rack::Response.new(@form.result(binding)).finish
+        res.write @form.result(binding)
       end
     elsif req.post?
       utterance = req['utterance']
       csrf = req[Rack::Csrf.field]
-      Rack::Response.new(@response.result(binding)).finish
+      res.write @response.result(binding)
     end
+
+    res['Content-Type'] = 'text/html'
+    res.finish
   end
 end

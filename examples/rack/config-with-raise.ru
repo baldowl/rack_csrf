@@ -1,8 +1,7 @@
-$: << File.join(File.dirname(__FILE__), '../../lib')
 require 'rack/csrf'
 
 require 'erb'
-require 'app'
+require './app'
 
 use Rack::ShowExceptions
 use Rack::Session::Cookie
