@@ -185,7 +185,7 @@ describe Rack::Csrf do
       let(:csrf) { Rack::Csrf.new nil }
 
       it 'should run the check' do
-        csrf.send(:skip_checking, request).should be_false
+        csrf.send(:skip_checking, request).should be false
       end
     end
 
@@ -193,7 +193,7 @@ describe Rack::Csrf do
       let(:csrf) { Rack::Csrf.new nil, :skip => ['POST:/hello'] }
 
       it 'should not run the check' do
-        csrf.send(:skip_checking, request).should be_true
+        csrf.send(:skip_checking, request).should be true
       end
     end
 
@@ -202,7 +202,7 @@ describe Rack::Csrf do
         let(:csrf) { Rack::Csrf.new nil, :skip_if => lambda { |req| req.env.key?('HTTP_X_VERY_SPECIAL_HEADER') } }
 
         it 'should not run the check' do
-          csrf.send(:skip_checking, request).should be_true
+          csrf.send(:skip_checking, request).should be true
         end
       end
 
@@ -211,7 +211,7 @@ describe Rack::Csrf do
           let(:csrf) { Rack::Csrf.new nil, :check_only => [] }
 
           it 'should run the check' do
-            csrf.send(:skip_checking, request).should be_false
+            csrf.send(:skip_checking, request).should be false
           end
         end
 
@@ -220,7 +220,7 @@ describe Rack::Csrf do
             let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
 
             it 'should run the check' do
-              csrf.send(:skip_checking, request).should be_false
+              csrf.send(:skip_checking, request).should be false
             end
           end
 
@@ -228,7 +228,7 @@ describe Rack::Csrf do
             let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/ciao'] }
 
             it 'should not run the check' do
-              csrf.send(:skip_checking, request).should be_true
+              csrf.send(:skip_checking, request).should be true
             end
           end
         end
