@@ -1,3 +1,15 @@
+# v2.5.0 (2014-06-15)
+
+* Fixed/improved the examples.
+* Added basic Travis setup.
+* Dropped support for Rack versions older than 1.1.0.
+* Lazy generation of the CSRF token.
+* Left Jeweler; totally embraced Bundler.
+* Dropped support for Ruby 1.8.6.
+* Fixed Cucumber's step for Ruby 1.8.*.
+
+
+
 # v2.4.0 (2012-02-28)
 
 * Updated examples' Gemfiles.
