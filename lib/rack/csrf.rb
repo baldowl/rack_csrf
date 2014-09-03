@@ -56,7 +56,7 @@ module Rack
     end
 
     def self.token(env)
-      env['rack.session'][key] ||= SecureRandom.base64(32)
+      env['rack.session'][key] ||= SecureRandom.urlsafe_base64(32)
     end
 
     def self.tag(env)
