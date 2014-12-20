@@ -73,7 +73,7 @@ When /^I insert the anti\-CSRF middleware with the :raise option$/ do
 end
 
 When /^I insert the anti\-CSRF middleware with the :skip option$/ do |table|
-  skippable = table.hashes.collect {|t| t.values}.flatten
+  skippable = table.hashes.collect(&:values).flatten
   @rack_builder.use Rack::Csrf, :skip => skippable
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
@@ -82,9 +82,10 @@ end
 When /^I insert the anti\-CSRF middleware with the :skip_if option$/ do |table|
   skippable = {}
   table.hashes.each {|row| skippable[row['name']] = row['value']}
-  @rack_builder.use Rack:: Csrf, :skip_if => Proc.new { |request|
+  skip_logic = Proc.new do |request|
     skippable.any? { |name, value| request.env[name] == value }
-  }
+  end
+  @rack_builder.use Rack:: Csrf, :skip_if => skip_logic
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
@@ -96,10 +97,11 @@ When /^I insert the anti\-CSRF middleware with the :skip and :skip_if options$/ 
     skip_option_arguments << row['path']
     skip_if_option_arguments[row['name']] = row['value']
   end
-
-  @rack_builder.use Rack:: Csrf, :skip => skip_option_arguments, :skip_if => Proc.new { |request|
+  skip_if_logic = Proc.new do |request|
     skip_if_option_arguments.any? { |name, value| request.env[name] == value }
-  }
+  end
+  @rack_builder.use Rack::Csrf, :skip => skip_option_arguments,
+    :skip_if => skip_if_logic
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
@@ -123,14 +125,14 @@ When /^I insert the anti\-CSRF middleware with the :header option$/ do
 end
 
 When /^I insert the anti\-CSRF middleware with the :check_also option$/ do |table|
-  check_also = table.hashes.collect {|t| t.values}.flatten
+  check_also = table.hashes.collect(&:values).flatten
   @rack_builder.use Rack::Csrf, :check_also => check_also
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
 When /^I insert the anti\-CSRF middleware with the :check_only option$/ do |table|
-  must_be_checked = table.hashes.collect {|t| t.values}.flatten
+  must_be_checked = table.hashes.collect(&:values).flatten
   @rack_builder.use Rack::Csrf, :check_only => must_be_checked
   @app = toy_app
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
@@ -147,6 +149,6 @@ Then /^I get an error message$/ do
 end
 
 def toy_app
-  @rack_builder.run(lambda {|env| Rack::Response.new('Hello world!').finish})
+  @rack_builder.run(lambda {|_| Rack::Response.new('Hello world!').finish})
   @rack_builder.to_app
 end

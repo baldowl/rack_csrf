@@ -4,7 +4,7 @@
 When /^it receives a (.*) request without the CSRF (?:token|header)$/ do |http_method|
   begin
     @browser.request '/', :method => http_method
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -12,7 +12,7 @@ end
 When /^it receives a (.*) request for (.+) without the CSRF (?:token|header|token or header)$/ do |http_method, path|
   begin
     @browser.request path, :method => http_method
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -34,7 +34,7 @@ When /^it receives a (.*) request with the wrong CSRF token$/ do |http_method|
     @browser.request '/', :method        => http_method,
                           'rack.session' => {Rack::Csrf.key   => 'right_token'},
                           :params        => {Rack::Csrf.field => 'wrong_token'}
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -43,7 +43,7 @@ When /^it receives a (.*) request with the wrong CSRF header/ do |http_method|
   begin
     @browser.request '/', :method => http_method,
                           Rack::Csrf.rackified_header => 'right_token'
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -51,7 +51,7 @@ end
 When /^it receives a (.*) request with neither PATH_INFO nor CSRF token or header$/ do |http_method|
   begin
     @browser.request '/doesntmatter', :method => http_method, 'PATH_INFO' => ''
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -59,7 +59,7 @@ end
 When /^it receives a request with headers (.+) = ([^ ]+) without the CSRF token or header$/ do |name, value|
   begin
     @browser.request '/', Hash[:method, 'POST', name, value]
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end
@@ -67,7 +67,7 @@ end
 When /^it receives a request with headers (.+) = ([^,]+), (.+), and without the CSRF token or header$/ do |name, value, method|
   begin
     @browser.request '/', Hash[:method, method, name, value]
-  rescue Exception => e
+  rescue StandardError => e
     @exception = e
   end
 end

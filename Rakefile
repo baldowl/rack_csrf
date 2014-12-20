@@ -31,7 +31,7 @@ Shows the changelog in Git between the given points.
 start -- defaults to the current version tag
 end   -- defaults to HEAD
 EOD
-task :changes, [:start, :end] do |t, args|
+task :changes, [:start, :end] do |_, args|
   args.with_defaults :start => "v#{Rack::Csrf::VERSION}",
     :end => 'HEAD'
   repo = Git.open Dir.pwd

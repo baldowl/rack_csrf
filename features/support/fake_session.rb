@@ -6,7 +6,7 @@ class FakeSession
   end
 
   def call(env)
-    env['rack.session'] ||= Hash.new
+    env['rack.session'] ||= {}
     @app.call(env)
   end
 end
