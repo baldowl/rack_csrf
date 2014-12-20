@@ -81,7 +81,7 @@ module Rack
 
     # Returns the custom header's name adapted to current standards.
     def self.rackified_header
-      "HTTP_#{@@header.gsub('-','_').upcase}"
+      "HTTP_#{@@header.gsub('-', '_').upcase}"
     end
 
     # Returns +true+ if the given request appears in the <b>skip list</b> or

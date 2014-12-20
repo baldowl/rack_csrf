@@ -6,7 +6,7 @@ Camping.goes :LittleApp
 
 module LittleApp
   use Rack::Csrf # This has to come BEFORE 'include Camping::Session',
-                 # otherwise you get the 'Rack::Csrf depends on session 
+                 # otherwise you get the 'Rack::Csrf depends on session
                  # middleware' exception. Weird...
   include Camping::Session
 

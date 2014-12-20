@@ -7,6 +7,8 @@ get '/notworking' do
 end
 
 post '/response' do
-  erb :response, :locals => {:utterance => params[:utterance],
-    :csrf => params[Rack::Csrf.field]}
+  erb :response, :locals => {
+    :utterance => params[:utterance],
+    :csrf => params[Rack::Csrf.field]
+  }
 end

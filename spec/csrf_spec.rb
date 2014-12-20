@@ -6,7 +6,7 @@ describe Rack::Csrf do
       Rack::Csrf.key.should == 'csrf.token'
     end
 
-    it "should be the value of the :key option" do
+    it 'should be the value of the :key option' do
       Rack::Csrf.new nil, :key => 'whatever'
       Rack::Csrf.key.should == 'whatever'
     end
@@ -23,7 +23,7 @@ describe Rack::Csrf do
       Rack::Csrf.field.should == '_csrf'
     end
 
-    it "should be the value of :field option" do
+    it 'should be the value of :field option' do
       Rack::Csrf.new nil, :field => 'whatever'
       Rack::Csrf.field.should == 'whatever'
     end
@@ -39,7 +39,7 @@ describe Rack::Csrf do
     subject { Rack::Csrf.header }
     it      { should == 'X_CSRF_TOKEN' }
 
-    context "when set to something" do
+    context 'when set to something' do
       before  { Rack::Csrf.new nil, :header => 'something' }
       subject { Rack::Csrf.header }
       it      { should == 'something' }
@@ -109,11 +109,11 @@ describe Rack::Csrf do
       tag.should =~ /type="hidden"/
     end
 
-    it "should have the name provided by method field" do
+    it 'should have the name provided by method field' do
       tag.should =~ /name="#{Rack::Csrf.field}"/
     end
 
-    it "should have the value provided by method token(env)" do
+    it 'should have the value provided by method token(env)' do
       quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.token(env)}")
       tag.should =~ /#{quoted_value}/
     end
@@ -137,7 +137,7 @@ describe Rack::Csrf do
       subject { metatag }
       it { should =~ /^<meta/ }
       it { should =~ /name="_csrf"/ }
-      it "should have the content provided by method token(env)" do
+      it 'should have the content provided by method token(env)' do
         quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
         metatag.should =~ /#{quoted_value}/
       end
@@ -152,7 +152,7 @@ describe Rack::Csrf do
       subject { metatag }
       it { should =~ /^<meta/ }
       it { should =~ /name="custom_name"/ }
-      it "should have the content provided by method token(env)" do
+      it 'should have the content provided by method token(env)' do
         quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
         metatag.should =~ /#{quoted_value}/
       end
