@@ -13,32 +13,32 @@ module Rack
     def initialize(app, opts = {})
       @app = app
 
-      @raisable        = opts[:raise] || false
-      @skip_list       = (opts[:skip] || []).map {|r| /\A#{r}\Z/i}
-      @skip_if         = opts[:skip_if] if opts[:skip_if]
-      @check_only_list = (opts[:check_only] || []).map {|r| /\A#{r}\Z/i}
-      @@field          = opts[:field] if opts[:field]
-      @@header         = opts[:header] if opts[:header]
-      @@key            = opts[:key] if opts[:key]
+      @raise_if_invalid = opts.fetch(:raise, false)
+      @skip_list        = opts.fetch(:skip, []).map {|r| /\A#{r}\Z/i}
+      @skip_if          = opts[:skip_if]
+      @check_only_list  = opts.fetch(:check_only, []).map {|r| /\A#{r}\Z/i}
+      @@field           = opts[:field] if opts[:field]
+      @@header          = opts[:header] if opts[:header]
+      @@key             = opts[:key] if opts[:key]
 
       standard_http_methods = %w(POST PUT DELETE PATCH)
-      check_also            = opts[:check_also] || []
+      check_also            = opts.fetch(:check_also, [])
       @http_methods = (standard_http_methods + check_also).flatten.uniq
     end
 
     def call(env)
       unless env['rack.session']
-        raise SessionUnavailable.new('Rack::Csrf depends on session middleware')
+        fail SessionUnavailable, 'Rack::Csrf depends on session middleware'
       end
       req = Rack::Request.new(env)
-      untouchable = skip_checking(req) ||
+      let_it_pass = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
         req.params[self.class.field] == self.class.token(env) ||
         req.env[self.class.rackified_header] == self.class.token(env)
-      if untouchable
+      if let_it_pass
         @app.call(env)
       else
-        raise InvalidCsrfToken if @raisable
+        fail InvalidCsrfToken if @raise_if_invalid
         [403, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
       end
     end
@@ -64,7 +64,7 @@ module Rack
     end
 
     def self.metatag(env, options = {})
-      name = options.delete(:name) || '_csrf'
+      name = options.fetch(:name, '_csrf')
       %Q(<meta name="#{name}" content="#{token(env)}" />)
     end
 
