@@ -1,14 +1,14 @@
 Then /^it lets it pass untouched$/ do
-  @browser.last_response.should be_ok
-  @browser.last_response.should =~ /Hello world!/
+  expect(@browser.last_response).to be_ok
+  expect(@browser.last_response).to match(/Hello world!/)
 end
 
 Then /^it responds with (\d\d\d)$/ do |code|
-  @browser.last_response.status.should == code.to_i
+  expect(@browser.last_response.status).to eq(code.to_i)
 end
 
 Then /^the response body is empty$/ do
-  @browser.last_response.body.should be_empty
+  expect(@browser.last_response.body).to be_empty
 end
 
 Then /^there is no response$/ do
@@ -16,5 +16,5 @@ Then /^there is no response$/ do
 end
 
 Then /^an exception is climbing up the stack$/ do
-  @exception.should be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
+  expect(@exception).to be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end

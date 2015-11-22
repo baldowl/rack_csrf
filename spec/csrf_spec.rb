@@ -3,58 +3,59 @@ require 'spec_helper'
 describe Rack::Csrf do
   describe 'key' do
     it "should be 'csrf.token' by default" do
-      Rack::Csrf.key.should == 'csrf.token'
+      expect(Rack::Csrf.key).to eq('csrf.token')
     end
 
     it 'should be the value of the :key option' do
       Rack::Csrf.new nil, :key => 'whatever'
-      Rack::Csrf.key.should == 'whatever'
+      expect(Rack::Csrf.key).to eq('whatever')
     end
   end
 
   describe 'csrf_key' do
     it 'should be the same as method key' do
-      Rack::Csrf.method(:csrf_key).should == Rack::Csrf.method(:key)
+      expect(Rack::Csrf.method(:csrf_key)).to eq(Rack::Csrf.method(:key))
     end
   end
 
   describe 'field' do
     it "should be '_csrf' by default" do
-      Rack::Csrf.field.should == '_csrf'
+      expect(Rack::Csrf.field).to eq('_csrf')
     end
 
     it 'should be the value of :field option' do
       Rack::Csrf.new nil, :field => 'whatever'
-      Rack::Csrf.field.should == 'whatever'
+      expect(Rack::Csrf.field).to eq('whatever')
     end
   end
 
   describe 'csrf_field' do
     it 'should be the same as method field' do
-      Rack::Csrf.method(:csrf_field).should == Rack::Csrf.method(:field)
+      expect(Rack::Csrf.method(:csrf_field)).to eq(Rack::Csrf.method(:field))
     end
   end
 
   describe 'header' do
     subject { Rack::Csrf.header }
-    it      { should == 'X_CSRF_TOKEN' }
+    it      { is_expected.to be == 'X_CSRF_TOKEN' }
 
     context 'when set to something' do
       before  { Rack::Csrf.new nil, :header => 'something' }
       subject { Rack::Csrf.header }
-      it      { should == 'something' }
+      it      { is_expected.to be == 'something' }
     end
   end
 
   describe 'csrf_header' do
-    subject { Rack::Csrf.method(:csrf_header) }
-    it      { should == Rack::Csrf.method(:header) }
+    it 'should be the same as method header' do
+      expect(Rack::Csrf.method(:csrf_header)).to eq(Rack::Csrf.method(:header))
+    end
   end
 
   describe 'token(env)' do
     let(:env) { {'rack.session' => {}} }
 
-    specify {Rack::Csrf.token(env).should have_at_least(32).characters}
+    specify {expect(Rack::Csrf.token(env)).to have_at_least(32).characters}
 
     context 'when accessing/manipulating the session' do
       before do
@@ -62,17 +63,17 @@ describe Rack::Csrf do
       end
 
       it 'should use the key provided by method key' do
-        env['rack.session'].should be_empty
+        expect(env['rack.session']).to be_empty
         Rack::Csrf.token env
-        env['rack.session'][Rack::Csrf.key].should_not be_nil
+        expect(env['rack.session'][Rack::Csrf.key]).not_to be_nil
       end
     end
 
     context 'when the session does not already contain the token' do
       it 'should store the token inside the session' do
-        env['rack.session'].should be_empty
+        expect(env['rack.session']).to be_empty
         token = Rack::Csrf.token(env)
-        token.should == env['rack.session'][Rack::Csrf.key]
+        expect(token).to eq(env['rack.session'][Rack::Csrf.key])
       end
     end
 
@@ -82,14 +83,14 @@ describe Rack::Csrf do
       end
 
       it 'should get the token from the session' do
-        env['rack.session'][Rack::Csrf.key].should == Rack::Csrf.token(env)
+        expect(env['rack.session'][Rack::Csrf.key]).to eq(Rack::Csrf.token(env))
       end
     end
   end
 
   describe 'csrf_token(env)' do
     it 'should be the same as method token(env)' do
-      Rack::Csrf.method(:csrf_token).should == Rack::Csrf.method(:token)
+      expect(Rack::Csrf.method(:csrf_token)).to eq(Rack::Csrf.method(:token))
     end
   end
 
@@ -102,26 +103,26 @@ describe Rack::Csrf do
     end
 
     it 'should be an input field' do
-      tag.should =~ /^<input/
+      expect(tag).to match(/^<input/)
     end
 
     it 'should be an hidden input field' do
-      tag.should =~ /type="hidden"/
+      expect(tag).to match(/type="hidden"/)
     end
 
     it 'should have the name provided by method field' do
-      tag.should =~ /name="#{Rack::Csrf.field}"/
+      expect(tag).to match(/name="#{Rack::Csrf.field}"/)
     end
 
     it 'should have the value provided by method token(env)' do
       quoted_value = Regexp.quote %Q(value="#{Rack::Csrf.token(env)}")
-      tag.should =~ /#{quoted_value}/
+      expect(tag).to match(/#{quoted_value}/)
     end
   end
 
   describe 'csrf_tag(env)' do
     it 'should be the same as method tag(env)' do
-      Rack::Csrf.method(:csrf_tag).should == Rack::Csrf.method(:tag)
+      expect(Rack::Csrf.method(:csrf_tag)).to eq(Rack::Csrf.method(:tag))
     end
   end
 
@@ -135,11 +136,11 @@ describe Rack::Csrf do
       end
 
       subject { metatag }
-      it { should =~ /^<meta/ }
-      it { should =~ /name="_csrf"/ }
+      it { is_expected.to match(/^<meta/) }
+      it { is_expected.to match(/name="_csrf"/) }
       it 'should have the content provided by method token(env)' do
         quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
-        metatag.should =~ /#{quoted_value}/
+        expect(metatag).to match(/#{quoted_value}/)
       end
     end
 
@@ -150,18 +151,18 @@ describe Rack::Csrf do
       end
 
       subject { metatag }
-      it { should =~ /^<meta/ }
-      it { should =~ /name="custom_name"/ }
+      it { is_expected.to match(/^<meta/) }
+      it { is_expected.to match(/name="custom_name"/) }
       it 'should have the content provided by method token(env)' do
         quoted_value = Regexp.quote %Q(content="#{Rack::Csrf.token(env)}")
-        metatag.should =~ /#{quoted_value}/
+        expect(metatag).to match(/#{quoted_value}/)
       end
     end
   end
 
   describe 'csrf_metatag(env)' do
     it 'should be the same as method metatag(env)' do
-      Rack::Csrf.method(:csrf_metatag).should == Rack::Csrf.method(:metatag)
+      expect(Rack::Csrf.method(:csrf_metatag)).to eq(Rack::Csrf.method(:metatag))
     end
   end
 
@@ -170,7 +171,7 @@ describe Rack::Csrf do
   describe 'rackified_header' do
     before  { Rack::Csrf.new nil, :header => 'my-header' }
     subject { Rack::Csrf.rackified_header }
-    it      { should == 'HTTP_MY_HEADER'}
+    it      { is_expected.to be == 'HTTP_MY_HEADER'}
   end
 
   describe 'skip_checking' do
@@ -185,7 +186,7 @@ describe Rack::Csrf do
       let(:csrf) { Rack::Csrf.new nil }
 
       it 'should run the check' do
-        csrf.send(:skip_checking, request).should be false
+        expect(csrf.send(:skip_checking, request)).to be false
       end
     end
 
@@ -193,7 +194,7 @@ describe Rack::Csrf do
       let(:csrf) { Rack::Csrf.new nil, :skip => ['POST:/hello'] }
 
       it 'should not run the check' do
-        csrf.send(:skip_checking, request).should be true
+        expect(csrf.send(:skip_checking, request)).to be true
       end
     end
 
@@ -202,7 +203,7 @@ describe Rack::Csrf do
         let(:csrf) { Rack::Csrf.new nil, :skip_if => lambda { |req| req.env.key?('HTTP_X_VERY_SPECIAL_HEADER') } }
 
         it 'should not run the check' do
-          csrf.send(:skip_checking, request).should be true
+          expect(csrf.send(:skip_checking, request)).to be true
         end
       end
 
@@ -211,7 +212,7 @@ describe Rack::Csrf do
           let(:csrf) { Rack::Csrf.new nil, :check_only => [] }
 
           it 'should run the check' do
-            csrf.send(:skip_checking, request).should be false
+            expect(csrf.send(:skip_checking, request)).to be false
           end
         end
 
@@ -220,7 +221,7 @@ describe Rack::Csrf do
             let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/hello'] }
 
             it 'should run the check' do
-              csrf.send(:skip_checking, request).should be false
+              expect(csrf.send(:skip_checking, request)).to be false
             end
           end
 
@@ -228,7 +229,7 @@ describe Rack::Csrf do
             let(:csrf) { Rack::Csrf.new nil, :check_only => ['POST:/ciao'] }
 
             it 'should not run the check' do
-              csrf.send(:skip_checking, request).should be true
+              expect(csrf.send(:skip_checking, request)).to be true
             end
           end
         end
