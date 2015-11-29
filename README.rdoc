@@ -190,6 +190,13 @@ In the +examples+ directory there are some small, working web applications
 written with different Rack-based frameworks. They are named after the used
 framework; see the various README files for other details.
 
+== Supported Rubies and Racks
+
+The gemspec shows the minimum Ruby and Rack versions, but Rack::Csrf is
+tested only with the Rubies and Racks you can see in +.travis.yml+. It could
+work also with older versions, but I decided not to test it against
+unsupported Rubies and Racks.
+
 == Contributing
 
 If you want to help:

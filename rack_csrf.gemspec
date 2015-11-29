@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
     'README.rdoc'
   ]
 
-  spec.required_ruby_version = '>= 1.8.7'
+  spec.required_ruby_version = '>= 1.9.2'
 
   if ENV['TEST_WITH_RACK']
     spec.add_runtime_dependency 'rack', "~> #{ENV['TEST_WITH_RACK']}"
