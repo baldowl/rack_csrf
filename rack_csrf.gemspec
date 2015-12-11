@@ -43,7 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'cucumber', '~> 1.3.18'
   spec.add_development_dependency 'rack-test', '>= 0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rspec-collection_matchers'
   spec.add_development_dependency 'rdoc', '>= 2.4.2'
   spec.add_development_dependency 'git', '>= 1.2.5'
 end

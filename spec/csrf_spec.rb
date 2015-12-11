@@ -55,7 +55,15 @@ describe Rack::Csrf do
   describe 'token(env)' do
     let(:env) { {'rack.session' => {}} }
 
-    specify {expect(Rack::Csrf.token(env)).to have_at_least(32).characters}
+    context 'should produce a token' do
+      specify 'with at least 32 characters' do
+        expect(Rack::Csrf.token(env).length).to be >= 32
+      end
+
+      specify 'without +, / or =' do
+        expect(Rack::Csrf.token(env)).not_to match(/\+|\/|=/)
+      end
+    end
 
     context 'when accessing/manipulating the session' do
       before do
