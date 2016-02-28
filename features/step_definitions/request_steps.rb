@@ -71,3 +71,21 @@ When /^it receives a request with headers (.+) = ([^,]+), (.+), and without the 
     @exception = e
   end
 end
+
+When /^I request a page with a form$/ do
+  begin
+    @browser.request '/form', :method => :get
+  rescue StandardError => e
+    @exception = e
+  end
+end
+
+When /^I request the same page again$/ do
+  begin
+    existing_session = @browser.last_request.instance_variable_get(:@env)['rack.session']
+    @browser.request '/form', :method => :get,
+                              'rack.session' => existing_session
+  rescue StandardError => e
+    @exception = e
+  end
+end

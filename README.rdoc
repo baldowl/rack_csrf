@@ -134,6 +134,14 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: empty
 
+[<tt>:reset_token</tt>]
+  By default, the anti-forging token lasts as long as the session; set this
+  option to true to reset the token after each request.
+
+    use Rack::Csrf, :reset_token => true
+
+  Default value: false.
+
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
 introduced in Rack version 1.1.0 tightened the parsing of POST params, so

@@ -57,6 +57,11 @@ Given /^a rack with the anti\-CSRF middleware and the :check_only option$/ do |t
   step 'I insert the anti-CSRF middleware with the :check_only option', table
 end
 
+Given /^a rack with the anti\-CSRF middleware and the :reset_token option$/ do
+  step 'a rack with the session middleware'
+  step 'I insert the anti-CSRF middleware with the :reset_token option'
+end
+
 # Yes, they're not as DRY as possible, but I think they're more readable than
 # a single step definition with a few captures and more complex checkings.
 
@@ -138,8 +143,14 @@ When /^I insert the anti\-CSRF middleware with the :check_only option$/ do |tabl
   @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
 end
 
+When /^I insert the anti\-CSRF middleware with the :reset_token option$/ do
+  @rack_builder.use Rack::Csrf, :reset_token => true
+  @app = toy_app
+  @browser = Rack::Test::Session.new(Rack::MockSession.new(@app))
+end
+
 Then /^I get a fully functional rack$/ do
-  expect {Rack::MockRequest.new(@app).get('/')}.to_not raise_exception
+  expect {Rack::MockRequest.new(@app).get('/')}.not_to raise_exception
 end
 
 Then /^I get an error message$/ do
@@ -149,6 +160,6 @@ Then /^I get an error message$/ do
 end
 
 def toy_app
-  @rack_builder.run(lambda {|_| Rack::Response.new('Hello world!').finish})
+  @rack_builder.run LittleApp
   @rack_builder.to_app
 end

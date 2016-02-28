@@ -18,3 +18,14 @@ end
 Then /^an exception is climbing up the stack$/ do
   expect(@exception).to be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end
+
+Then /^it contains a (different )?CSRF token$/ do |subsequent_request|
+  expect(@browser.last_response).to be_ok
+  expect(@browser.last_response).to match(/input type="hidden" name="_csrf" value/)
+  csrf_token = @browser.last_response.match(/value="(.*)"/).captures.first
+  if subsequent_request
+    expect(csrf_token).not_to be == @first_token
+  else
+    @first_token = csrf_token
+  end
+end
