@@ -6,7 +6,6 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - 2.3
 
 env:
   - TEST_WITH_RACK=1.4.0
