@@ -33,8 +33,7 @@ module Rack
       req = Rack::Request.new(env)
       let_it_pass = skip_checking(req) ||
         !@http_methods.include?(req.request_method) ||
-        req.params[self.class.field] == self.class.token(env) ||
-        req.env[self.class.rackified_header] == self.class.token(env)
+        found_a_valid_token?(req)
       if let_it_pass
         @app.call(env)
       else
@@ -102,6 +101,12 @@ module Rack
       list.any? do |route|
         route =~ (request.request_method + ':' + pi)
       end
+    end
+
+    def found_a_valid_token? request
+      token = self.class.token(request.env)
+      Rack::Utils.secure_compare(request.params[self.class.field].to_s, token) ||
+        Rack::Utils.secure_compare(request.env[self.class.rackified_header].to_s, token)
     end
   end
 end

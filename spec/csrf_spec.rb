@@ -244,4 +244,42 @@ describe Rack::Csrf do
       end
     end
   end
+
+  describe 'found_a_valid_token?' do
+    let(:env) { {'rack.session' => {}} }
+
+    let(:csrf) { Rack::Csrf.new nil }
+
+    let(:mock_request_env) do
+      Rack::MockRequest.env_for '/hello',
+        :method => 'POST',
+        :input => 'foo=bar'
+    end
+
+    before do
+      Rack::Csrf.token env
+      mock_request_env['rack.session'] = env['rack.session']
+    end
+
+    context 'should be true' do
+      specify "if a valid token can be found in the request's paramaters" do
+        mock_request_env['rack.input'] = StringIO.new("#{Rack::Csrf.field}=#{Rack::Csrf.token(env)}")
+        request = Rack::Request.new(mock_request_env)
+        expect(csrf.send(:found_a_valid_token?, request)).to be true
+      end
+
+      specify "if a valid token can be found in the request's headers" do
+        mock_request_env[Rack::Csrf.rackified_header] = Rack::Csrf.token(env)
+        request = Rack::Request.new(mock_request_env)
+        expect(csrf.send(:found_a_valid_token?, request)).to be true
+      end
+    end
+
+    context 'should be false' do
+      specify 'if no valid token can be found anywhere' do
+        request = Rack::Request.new(mock_request_env)
+        expect(csrf.send(:found_a_valid_token?, request)).to be false
+      end
+    end
+  end
 end
