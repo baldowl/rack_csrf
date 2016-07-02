@@ -12,5 +12,18 @@ env:
   - TEST_WITH_RACK=1.4.0
   - TEST_WITH_RACK=1.5.0
   - TEST_WITH_RACK=1.6.0
+  - TEST_WITH_RACK=2.0.0
+
+matrix:
+  exclude:
+    - rvm: 2.0
+      env: TEST_WITH_RACK=2.0.0
+    - rvm: 2.1
+      env: TEST_WITH_RACK=2.0.0
+    - rvm: 2.2
+      env: TEST_WITH_RACK=2.0.0
+  include:
+    - rvm: 2.2.2
+      env: TEST_WITH_RACK=2.0.0
 
 script: bundle exec rake spec features
