@@ -3,10 +3,11 @@ sudo: false
 language: ruby
 
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
-  - 2.3.1
+  - 2.0.0-p648
+  - 2.1.10
+  - 2.2.6
+  - 2.3.3
+  - 2.4.0
 
 env:
   - TEST_WITH_RACK=1.4.0
@@ -16,14 +17,9 @@ env:
 
 matrix:
   exclude:
-    - rvm: 2.0
+    - rvm: 2.0.0-p648
       env: TEST_WITH_RACK=2.0.0
-    - rvm: 2.1
-      env: TEST_WITH_RACK=2.0.0
-    - rvm: 2.2
-      env: TEST_WITH_RACK=2.0.0
-  include:
-    - rvm: 2.2.2
+    - rvm: 2.1.10
       env: TEST_WITH_RACK=2.0.0
 
 script: bundle exec rake spec features
