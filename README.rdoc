@@ -219,5 +219,5 @@ forgo responsibilities for keeping your application as safe as possible.
 
 == Copyright
 
-Copyright (c) 2009, 2010, 2011, 2012, 2014 Emanuele Vicentini. See
+Copyright (c) 2009, 2010, 2011, 2012, 2014, 2016 Emanuele Vicentini. See
 LICENSE.rdoc for details.

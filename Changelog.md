@@ -1,3 +1,14 @@
+# v2.6.0 (2016-12-31)
+
+Many little, internal, changes; the important ones are:
+
+* switched to use SecureRandom.urlsafe_base64 to make the token URL-friendly
+  (courtesy of [steved](https://github.com/steved));
+* code is tested against Rack 1.4, 1.5, 1.6 and 2.0;
+* code is tested only on Ruby 2.0.0 and later.
+
+
+
 # v2.5.0 (2014-06-15)
 
 * Fixed/improved the examples.
