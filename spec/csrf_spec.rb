@@ -282,4 +282,26 @@ describe Rack::Csrf do
       end
     end
   end
+
+  describe 'remove_token' do
+    let :env do
+      {
+        'rack.session' => {Rack::Csrf.key => 'right_token'},
+        'test_key' => 'test_value'
+      }
+    end
+
+    let(:csrf) { Rack::Csrf.new nil }
+
+    it 'should remove the token' do
+      csrf.send(:remove_token, env)
+      expect(env).not_to have_key(Rack::Csrf.key)
+    end
+
+    it 'should not touch anything but the token' do
+      original_env = Marshal.load(Marshal.dump(env)).tap {|e| e['rack.session'].delete Rack::Csrf.key}
+      csrf.send(:remove_token, env)
+      expect(env).to eq(original_env)
+    end
+  end
 end

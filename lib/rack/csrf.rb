@@ -17,6 +17,7 @@ module Rack
       @skip_list        = opts.fetch(:skip, []).map {|r| /\A#{r}\Z/i}
       @skip_if          = opts[:skip_if]
       @check_only_list  = opts.fetch(:check_only, []).map {|r| /\A#{r}\Z/i}
+      @remove_token     = opts.fetch(:remove_token, false)
       @@field           = opts[:field] if opts[:field]
       @@header          = opts[:header] if opts[:header]
       @@key             = opts[:key] if opts[:key]
@@ -105,8 +106,13 @@ module Rack
 
     def found_a_valid_token? request
       token = self.class.token(request.env)
+      remove_token(request.env) if @remove_token
       Rack::Utils.secure_compare(request.params[self.class.field].to_s, token) ||
         Rack::Utils.secure_compare(request.env[self.class.rackified_header].to_s, token)
+    end
+
+    def remove_token env
+      env['rack.session'].delete self.class.key
     end
   end
 end

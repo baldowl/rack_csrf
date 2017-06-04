@@ -134,6 +134,17 @@ The following options allow you to tweak Rack::Csrf.
 
   Default value: empty
 
+[<tt>:remove_token</tt>]
+  By default, the anti-forging token lasts as long as the session; set this
+  option to true to remove the token after each use.
+
+    use Rack::Csrf, :remove_token => true
+
+  Requests excluded because of any combination of <tt>:check_only</tt>,
+  <tt>:skip</tt> and <tt>:skip_if</tt> do *not* trigger the removal.
+
+  Default value: false.
+
 The <tt>:browser_only</tt> option has been removed; you do not need to edit
 any rackup file because Rack::Csrf simply ignores unknown options. Changes
 introduced in Rack version 1.1.0 tightened the parsing of POST params, so

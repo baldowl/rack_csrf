@@ -18,3 +18,11 @@ end
 Then /^an exception is climbing up the stack$/ do
   expect(@exception).to be_an_instance_of(Rack::Csrf::InvalidCsrfToken)
 end
+
+Then /^the CSRF token is still there$/ do
+  expect(@browser.last_request.session[Rack::Csrf.key]).to eq('right_token')
+end
+
+Then /^the CSRF token has been deleted$/ do
+  expect(@browser.last_request.session[Rack::Csrf.key]).to be_nil
+end
