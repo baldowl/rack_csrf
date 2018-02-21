@@ -1,4 +1,4 @@
-= Rack::Csrf {<img src="https://travis-ci.org/baldowl/rack_csrf.png?branch=master" alt="Build Status" />}[https://travis-ci.org/baldowl/rack_csrf] {<img src="https://badge.fury.io/rb/rack_csrf.png" alt="Gem Version" />}[http://badge.fury.io/rb/rack_csrf]
+= Rack::Csrf {<img src="https://travis-ci.org/baldowl/rack_csrf.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/baldowl/rack_csrf] {<img src="https://badge.fury.io/rb/rack_csrf.svg" alt="Gem Version" />}[http://badge.fury.io/rb/rack_csrf]
 
 This is just a small Rack middleware whose only goal is to lessen the hazards
 posed by CSRF attacks by trying to ensure that all requests of particular
