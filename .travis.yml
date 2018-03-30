@@ -3,9 +3,9 @@ sudo: false
 language: ruby
 
 rvm:
-  - 2.2.7
-  - 2.3.4
-  - 2.4.1
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
 
 env:
   - TEST_WITH_RACK=1.4.0
