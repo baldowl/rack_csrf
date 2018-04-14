@@ -295,7 +295,7 @@ describe Rack::Csrf do
 
     it 'should remove the token' do
       csrf.send(:remove_token, env)
-      expect(env).not_to have_key(Rack::Csrf.key)
+      expect(env['rack.session']).not_to have_key(Rack::Csrf.key)
     end
 
     it 'should not touch anything but the token' do
