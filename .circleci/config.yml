@@ -1,0 +1,73 @@
+version: 2.1
+
+jobs:
+  run_tests:
+    parameters:
+      ruby_version:
+        description: "Version of Ruby to run tests in"
+        type: string
+      rack_version:
+        description: "More or less the Rack version we want to test against"
+        type: string
+    environment:
+      TEST_WITH_RACK: << parameters.rack_version >>
+    docker:
+      - image: ruby:<< parameters.ruby_version >>
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec rake spec
+      - run: bundle exec rake features
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - run_tests:
+          ruby_version: "2.3.8"
+          rack_version: "1.4.0"
+      - run_tests:
+          ruby_version: "2.4.5"
+          rack_version: "1.4.0"
+      - run_tests:
+          ruby_version: "2.5.3"
+          rack_version: "1.4.0"
+      - run_tests:
+          ruby_version: "2.6.1"
+          rack_version: "1.4.0"
+      - run_tests:
+          ruby_version: "2.3.8"
+          rack_version: "1.5.0"
+      - run_tests:
+          ruby_version: "2.4.5"
+          rack_version: "1.5.0"
+      - run_tests:
+          ruby_version: "2.5.3"
+          rack_version: "1.5.0"
+      - run_tests:
+          ruby_version: "2.6.1"
+          rack_version: "1.5.0"
+      - run_tests:
+          ruby_version: "2.3.8"
+          rack_version: "1.6.0"
+      - run_tests:
+          ruby_version: "2.4.5"
+          rack_version: "1.6.0"
+      - run_tests:
+          ruby_version: "2.5.3"
+          rack_version: "1.6.0"
+      - run_tests:
+          ruby_version: "2.6.1"
+          rack_version: "1.6.0"
+      - run_tests:
+          ruby_version: "2.3.8"
+          rack_version: "2.0.0"
+      - run_tests:
+          ruby_version: "2.4.5"
+          rack_version: "2.0.0"
+      - run_tests:
+          ruby_version: "2.5.3"
+          rack_version: "2.0.0"
+      - run_tests:
+          ruby_version: "2.6.1"
+          rack_version: "2.0.0"
