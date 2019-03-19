@@ -24,50 +24,38 @@ workflows:
   test:
     jobs:
       - run_tests:
-          ruby_version: "2.3.8"
-          rack_version: "1.4.0"
-      - run_tests:
           ruby_version: "2.4.5"
           rack_version: "1.4.0"
       - run_tests:
-          ruby_version: "2.5.3"
+          ruby_version: "2.5.5"
           rack_version: "1.4.0"
       - run_tests:
-          ruby_version: "2.6.1"
+          ruby_version: "2.6.2"
           rack_version: "1.4.0"
-      - run_tests:
-          ruby_version: "2.3.8"
-          rack_version: "1.5.0"
       - run_tests:
           ruby_version: "2.4.5"
           rack_version: "1.5.0"
       - run_tests:
-          ruby_version: "2.5.3"
+          ruby_version: "2.5.5"
           rack_version: "1.5.0"
       - run_tests:
-          ruby_version: "2.6.1"
+          ruby_version: "2.6.2"
           rack_version: "1.5.0"
-      - run_tests:
-          ruby_version: "2.3.8"
-          rack_version: "1.6.0"
       - run_tests:
           ruby_version: "2.4.5"
           rack_version: "1.6.0"
       - run_tests:
-          ruby_version: "2.5.3"
+          ruby_version: "2.5.5"
           rack_version: "1.6.0"
       - run_tests:
-          ruby_version: "2.6.1"
+          ruby_version: "2.6.2"
           rack_version: "1.6.0"
-      - run_tests:
-          ruby_version: "2.3.8"
-          rack_version: "2.0.0"
       - run_tests:
           ruby_version: "2.4.5"
           rack_version: "2.0.0"
       - run_tests:
-          ruby_version: "2.5.3"
+          ruby_version: "2.5.5"
           rack_version: "2.0.0"
       - run_tests:
-          ruby_version: "2.6.1"
+          ruby_version: "2.6.2"
           rack_version: "2.0.0"
