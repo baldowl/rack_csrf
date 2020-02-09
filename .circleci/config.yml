@@ -71,3 +71,15 @@ workflows:
       - run_tests:
           ruby_version: "2.7.0"
           rack_version: "2.1.0"
+      - run_tests:
+          ruby_version: "2.4.9"
+          rack_version: "2.2.0"
+      - run_tests:
+          ruby_version: "2.5.7"
+          rack_version: "2.2.0"
+      - run_tests:
+          ruby_version: "2.6.5"
+          rack_version: "2.2.0"
+      - run_tests:
+          ruby_version: "2.7.0"
+          rack_version: "2.2.0"

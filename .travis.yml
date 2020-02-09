@@ -11,5 +11,6 @@ env:
   - TEST_WITH_RACK=1.6.0
   - TEST_WITH_RACK=2.0.0
   - TEST_WITH_RACK=2.1.0
+  - TEST_WITH_RACK=2.2.0
 
 script: bundle exec rake spec features
