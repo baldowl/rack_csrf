@@ -1,4 +1,4 @@
-= Rack::Csrf {<img src="https://travis-ci.org/baldowl/rack_csrf.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/baldowl/rack_csrf] {<img src="https://circleci.com/gh/baldowl/rack_csrf.svg?style=svg" alt="CircleCI" />}[https://circleci.com/gh/baldowl/rack_csrf] {<img src="https://badge.fury.io/rb/rack_csrf.svg" alt="Gem Version" />}[http://badge.fury.io/rb/rack_csrf]
+= Rack::Csrf {<img src="https://circleci.com/gh/baldowl/rack_csrf.svg?style=svg" alt="CircleCI" />}[https://circleci.com/gh/baldowl/rack_csrf] {<img src="https://badge.fury.io/rb/rack_csrf.svg" alt="Gem Version" />}[http://badge.fury.io/rb/rack_csrf]
 
 This is just a small Rack middleware whose only goal is to lessen the hazards
 posed by CSRF attacks by trying to ensure that all requests of particular
@@ -193,7 +193,7 @@ framework; see the various README files for other details.
 == Supported Rubies and Racks
 
 The gemspec shows the minimum Ruby and Rack versions, but Rack::Csrf is
-tested only with the Rubies and Racks you can see in +.travis.yml+ and
+tested only with the Rubies and Racks you can see in
 <tt>.circleci/config.yml</tt>. It could work also with older versions, but
 I decided not to test it against unsupported Rubies and Racks.
 
