@@ -3,6 +3,9 @@ require 'securerandom'
 
 module Rack
   class Csrf
+    CONTENT_TYPE = (Rack.release >= '2.3' ? 'content-type' : 'Content-Type').freeze
+    CONTENT_LENGTH = (Rack.release >= '2.3' ? 'content-length' : 'Content-Length').freeze
+
     class SessionUnavailable < StandardError; end
     class InvalidCsrfToken < StandardError; end
 
@@ -38,7 +41,7 @@ module Rack
         @app.call(env)
       else
         fail InvalidCsrfToken if @raise_if_invalid
-        [403, {'Content-Type' => 'text/html', 'Content-Length' => '0'}, []]
+        [403, {CONTENT_TYPE => 'text/html', CONTENT_LENGTH => '0'}, []]
       end
     end
 
