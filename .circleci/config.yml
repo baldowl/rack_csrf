@@ -26,5 +26,5 @@ workflows:
       - run_tests:
           matrix:
             parameters:
-              ruby_version: ["2.6.9", "2.7.5", "3.0.3", "3.1.1"]
+              ruby_version: ["2.7.5", "3.0.3", "3.1.1"]
               rack_version: ["1.6.0", "2.1.0", "2.2.0"]
