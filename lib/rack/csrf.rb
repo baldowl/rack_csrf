@@ -1,4 +1,10 @@
-require 'rack'
+require 'rack/version'
+if Rack.release >= '2.3'
+  require 'rack/request'
+  require 'rack/utils'
+else
+  require 'rack'
+end
 require 'securerandom'
 
 module Rack
