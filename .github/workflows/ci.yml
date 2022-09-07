@@ -20,6 +20,7 @@ jobs:
           - "1.6.0"
           - "2.1.0"
           - "2.2.0"
+          - "3.0.0"
     name: Ruby ~> ${{ matrix.ruby_version }}; Rack ~> ${{ matrix.rack_version }}
     runs-on: ubuntu-latest
     env:
