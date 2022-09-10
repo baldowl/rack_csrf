@@ -194,8 +194,9 @@ framework; see the various README files for other details.
 
 The gemspec shows the minimum Ruby and Rack versions, but Rack::Csrf is
 tested only with the Rubies and Racks you can see in
-<tt>.circleci/config.yml</tt>. It could work also with older versions, but
-I decided not to test it against unsupported Rubies and Racks.
+<tt>.circleci/config.yml</tt> and/or <tt>.github/workflows/ci.yml</tt>. It
+could work also with older versions, but I decided not to test it against
+unsupported Rubies and Racks.
 
 == Contributing
 
@@ -219,5 +220,5 @@ forgo responsibilities for keeping your application as safe as possible.
 
 == Copyright
 
-Copyright (c) 2009, 2010, 2011, 2012, 2014, 2016 Emanuele Vicentini. See
-LICENSE.rdoc for details.
+Copyright (c) 2009, 2010, 2011, 2012, 2014, 2016, 2022 Emanuele Vicentini. 
+See LICENSE.rdoc for details.

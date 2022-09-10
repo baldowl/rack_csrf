@@ -1,3 +1,8 @@
+# v2.7.0 (2022-09-10)
+
+Many little, negligible, changes, plus support for Rake 3 (courtesy of
+[jeremyevans](https://github.com/jeremyevans) :trophy:)
+
 # v2.6.0 (2016-12-31)
 
 Many little, internal, changes; the important ones are:
