@@ -1,8 +1,0 @@
-<form action="/response" method="post">
-  <h1>Spit your utterance!</h1>
-  <input type="text" name="utterance">
-  <%= Rack::Csrf.tag(env) %>
-  <p><input type="submit" value="Send!"></p>
-</form>
-
-<p>Try also the <a href="/notworking">not working</a> form!</p>

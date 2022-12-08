@@ -4,7 +4,7 @@ require 'rack/csrf'
 require 'erb'
 require './app'
 
-use Rack::ShowExceptions
+use Sinatra::ShowExceptions
 use Rack::Session::Cookie
 use Rack::Csrf, :raise => true
 

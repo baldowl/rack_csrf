@@ -1,4 +1,5 @@
 require 'rack/csrf'
+require 'rack/session'
 
 require 'erb'
 require './app'
