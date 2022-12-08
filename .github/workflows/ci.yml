@@ -27,9 +27,10 @@ jobs:
       TEST_WITH_RACK: ${{ matrix.rack_version }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby-pkgs@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
+          apt-get: _update_ libyaml-dev
       - run: bundle exec rake spec
       - run: bundle exec rake features
