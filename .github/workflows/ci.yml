@@ -32,5 +32,4 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
           apt-get: _update_ libyaml-dev
-      - run: bundle exec rake spec
-      - run: bundle exec rake features
+      - run: bundle exec rake

@@ -18,8 +18,7 @@ jobs:
       - run: apt-get update -qq
       - run: apt-get install -y -qq libyaml-dev
       - run: bundle install
-      - run: bundle exec rake spec
-      - run: bundle exec rake features
+      - run: bundle exec rake
 
 workflows:
   version: 2
