@@ -1,4 +1,4 @@
-= Rack::Csrf {<img src="https://circleci.com/gh/baldowl/rack_csrf.svg?style=svg" alt="CircleCI" />}[https://circleci.com/gh/baldowl/rack_csrf] {<img src="https://github.com/baldowl/rack_csrf/actions/workflows/ci.yml/badge.svg?branch=master" alt="Actions Status: CI" />}[https://github.com/baldowl/rack_csrf/actions?query=workflow%3ACI+branch%3Amaster] {<img src="https://badge.fury.io/rb/rack_csrf.svg" alt="Gem Version" />}[http://badge.fury.io/rb/rack_csrf]
+= Rack::Csrf {rdoc-image:https://circleci.com/gh/baldowl/rack_csrf.svg?style=svg}[https://circleci.com/gh/baldowl/rack_csrf] {rdoc-image:https://github.com/baldowl/rack_csrf/actions/workflows/ci.yml/badge.svg?branch=master}[https://github.com/baldowl/rack_csrf/actions?query=workflow%3ACI+branch%3Amaster] {rdoc-image:https://badge.fury.io/rb/rack_csrf.svg}[http://badge.fury.io/rb/rack_csrf]
 
 This is just a small Rack middleware whose only goal is to lessen the hazards
 posed by CSRF attacks by trying to ensure that all requests of particular
