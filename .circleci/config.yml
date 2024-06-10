@@ -28,4 +28,4 @@ workflows:
           matrix:
             parameters:
               ruby_version: ["3.1", "3.2", "3.3"]
-              rack_version: ["1.6.0", "2.1.0", "2.2.0", "3.0.0"]
+              rack_version: ["2.2.0", "3.0.0"]
