@@ -56,7 +56,7 @@ Feature: Skipping the check for some specific routes
       | PUT    | /this/one/too                   |
       | DELETE | /this/one/too                   |
 
-  Scenario Outline: Handling correctly empty PATH_INFO
+  Scenario Outline: Handling correctly empty PATH_INFO when using Rack 3.0 and earlier
     Given a rack with the anti-CSRF middleware and the :skip option
       | pair     |
       | POST:/   |

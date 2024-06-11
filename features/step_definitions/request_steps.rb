@@ -48,9 +48,11 @@ When /^it receives a (.*) request with the wrong CSRF header/ do |http_method|
   end
 end
 
+# Rack 3.1 changed spec so that now PATH_INFO cannot be empty. Below we cheat
+# a bit and change PATH_INFO when using Rack 3.1+
 When /^it receives a (.*) request with neither PATH_INFO nor CSRF token or header$/ do |http_method|
   begin
-    @browser.request '/doesntmatter', :method => http_method, 'PATH_INFO' => ''
+    @browser.request '/doesntmatter', :method => http_method, 'PATH_INFO' => (Rack.release >= '3.1.0' ? '/' : '')
   rescue StandardError => e
     @exception = e
   end

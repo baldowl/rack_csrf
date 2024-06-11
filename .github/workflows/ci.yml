@@ -19,6 +19,7 @@ jobs:
         rack_version:
           - "2.2.0"
           - "3.0.0"
+          - "3.1.0"
     name: Ruby ~> ${{ matrix.ruby_version }}; Rack ~> ${{ matrix.rack_version }}
     runs-on: ubuntu-latest
     env:
