@@ -5,9 +5,6 @@ on:
   - push
   - workflow_dispatch
 
-permissions:
-  contents: read
-
 jobs:
   tests:
     strategy:
@@ -22,14 +19,15 @@ jobs:
           - "3.0.0"
           - "3.1.0"
     name: Ruby ~> ${{ matrix.ruby_version }}; Rack ~> ${{ matrix.rack_version }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     env:
       TEST_WITH_RACK: ${{ matrix.rack_version }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby-pkgs@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-          apt-get: _update_ libyaml-dev
       - run: bundle exec rake
